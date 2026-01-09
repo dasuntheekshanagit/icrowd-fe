@@ -33,34 +33,64 @@ const brands = [
 
 const categories = [
   {
-    title: "Audio",
-    href: "/category/audio",
-    description: "Headphones, Earbuds, Speakers, and more.",
+    title: "Earbuds",
+    href: "/category/earbuds",
   },
   {
-    title: "Power & Charging",
-    href: "/category/power",
-    description: "Power banks, Chargers, Cables, and Adapters.",
+    title: "Powerbanks",
+    href: "/category/powerbanks",
   },
   {
-    title: "Photography",
-    href: "/category/photography",
-    description: "Gimbals, Tripods, and Camera accessories.",
+    title: "Headphones",
+    href: "/category/headphones",
   },
   {
-    title: "Cases & Protection",
-    href: "/category/protection",
-    description: "Phone cases, Screen protectors, and Sleeves.",
+    title: "Charging Adapters & Cables",
+    href: "/category/charging",
   },
   {
-    title: "Smart Wearables",
-    href: "/category/wearables",
-    description: "Smartwatches, Fitness trackers, and Bands.",
+    title: "Smart Watches",
+    href: "/category/smart-watches",
   },
   {
-    title: "Phones",
-    href: "/category/phones",
-    description: "Latest smartphones from top brands.",
+    title: "Bluetooth Speakers",
+    href: "/category/bluetooth-speakers",
+  },
+  {
+    title: "Mobile Gimbals",
+    href: "/category/mobile-gimbals",
+  },
+  {
+    title: "Wireless Mics",
+    href: "/category/wireless-mics",
+  },
+  {
+    title: "Drones",
+    href: "/category/drones",
+  },
+  {
+    title: "HUBS",
+    href: "/category/hubs",
+  },
+  {
+    title: "Phone Cases",
+    href: "/category/phone-cases",
+  },
+  {
+    title: "Studio Items",
+    href: "/category/studio-items",
+  },
+  {
+    title: "Pouches",
+    href: "/category/pouches",
+  },
+  {
+    title: "iPad Pencil",
+    href: "/category/ipad-pencil",
+  },
+  {
+    title: "iPad Covers",
+    href: "/category/ipad-covers",
   },
 ];
 

@@ -29,34 +29,79 @@ const brands = [
 
 const categories = [
   {
-    title: "Audio",
-    href: "/category/audio",
-    description: "Headphones, Earbuds, Speakers, and more.",
+    title: "Earbuds",
+    href: "/category/earbuds",
+    description: "Wireless and wired earbuds for immersive audio.",
   },
   {
-    title: "Power & Charging",
-    href: "/category/power",
-    description: "Power banks, Chargers, Cables, and Adapters.",
+    title: "Powerbanks",
+    href: "/category/powerbanks",
+    description: "Portable power for your devices on the go.",
   },
   {
-    title: "Photography",
-    href: "/category/photography",
-    description: "Gimbals, Tripods, and Camera accessories.",
+    title: "Headphones",
+    href: "/category/headphones",
+    description: "Over-ear and on-ear headphones for superior sound.",
   },
   {
-    title: "Cases & Protection",
-    href: "/category/protection",
-    description: "Phone cases, Screen protectors, and Sleeves.",
+    title: "Charging Adapters & Cables",
+    href: "/category/charging",
+    description: "Fast chargers and durable cables for all devices.",
   },
   {
-    title: "Smart Wearables",
-    href: "/category/wearables",
-    description: "Smartwatches, Fitness trackers, and Bands.",
+    title: "Smart Watches",
+    href: "/category/smart-watches",
+    description: "Wearable technology to track your health and notifications.",
   },
   {
-    title: "Phones",
-    href: "/category/phones",
-    description: "Latest smartphones from top brands.",
+    title: "Bluetooth Speakers",
+    href: "/category/bluetooth-speakers",
+    description: "Portable speakers for music anywhere.",
+  },
+  {
+    title: "Mobile Gimbals",
+    href: "/category/mobile-gimbals",
+    description: "Stabilizers for smooth mobile videography.",
+  },
+  {
+    title: "Wireless Mics",
+    href: "/category/wireless-mics",
+    description: "Microphones for clear audio recording.",
+  },
+  {
+    title: "Drones",
+    href: "/category/drones",
+    description: "Capture aerial footage with high-quality drones.",
+  },
+  {
+    title: "HUBS",
+    href: "/category/hubs",
+    description: "Expand your connectivity with USB hubs.",
+  },
+  {
+    title: "Phone Cases",
+    href: "/category/phone-cases",
+    description: "Protective and stylish cases for your phone.",
+  },
+  {
+    title: "Studio Items",
+    href: "/category/studio-items",
+    description: "Equipment for professional studio setups.",
+  },
+  {
+    title: "Pouches",
+    href: "/category/pouches",
+    description: "Carrying pouches for your gadgets and accessories.",
+  },
+  {
+    title: "iPad Pencil",
+    href: "/category/ipad-pencil",
+    description: "Stylus pens for iPad creativity and productivity.",
+  },
+  {
+    title: "iPad Covers",
+    href: "/category/ipad-covers",
+    description: "Protective covers and cases for iPads.",
   },
 ];
 
@@ -85,7 +130,7 @@ export const NavMenu = (props: ComponentProps<typeof NavigationMenu>) => (
       <NavigationMenuItem>
         <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
         <NavigationMenuContent>
-          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+          <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] md:grid-cols-3 lg:w-[800px]">
             {categories.map((category) => (
               <ListItem
                 key={category.title}
