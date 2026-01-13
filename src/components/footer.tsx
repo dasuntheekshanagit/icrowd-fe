@@ -1,7 +1,7 @@
 import { Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail } from "lucide-react"
 import { Logo } from "@/components/logo"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+// import { Button } from "@/components/ui/button"
+// import { Input } from "@/components/ui/input"
 
 export function Footer() {
   return (
@@ -95,17 +95,17 @@ export function Footer() {
                 <span>support@icrowd.com</span>
               </li>
             </ul>
-            
-            <div className="pt-4">
-                <h4 className="font-medium mb-2 text-sm">Subscribe to our newsletter</h4>
-                <div className="flex gap-2">
-                    <Input placeholder="Email address" className="bg-background" />
-                    <Button size="icon" className="shrink-0">
-                        <ArrowRight className="w-4 h-4" />
-                        <span className="sr-only">Subscribe</span>
-                    </Button>
-                </div>
-            </div>
+
+            {/*<div className="pt-4">*/}
+            {/*    <h4 className="font-medium mb-2 text-sm">Subscribe to our newsletter</h4>*/}
+            {/*    <div className="flex gap-2">*/}
+            {/*        <Input placeholder="Email address" className="bg-background" />*/}
+            {/*        <Button size="icon" className="shrink-0">*/}
+            {/*            <ArrowRight className="w-4 h-4" />*/}
+            {/*            <span className="sr-only">Subscribe</span>*/}
+            {/*        </Button>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
           </div>
         </div>
 
@@ -117,4 +117,4 @@ export function Footer() {
   )
 }
 
-import { ArrowRight } from "lucide-react"
+// import { ArrowRight } from "lucide-react"
