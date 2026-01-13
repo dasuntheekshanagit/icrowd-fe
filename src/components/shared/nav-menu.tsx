@@ -13,7 +13,7 @@ import * as React from "react";
 import type { ComponentProps } from "react";
 
 export const NavMenu = (props: ComponentProps<typeof NavigationMenu>) => {
-  const [brands, setBrands] = React.useState<string[]>([]);
+  const [brands, setBrands] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -40,8 +40,8 @@ export const NavMenu = (props: ComponentProps<typeof NavigationMenu>) => {
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3 lg:w-[600px]">
               {brands.map((brand) => (
-                <ListItem key={brand} title={brand} href={`/brand/${brand.toLowerCase().replace(/ /g, "-").replace(/\//g, "")}`}>
-                  Explore {brand} products
+                <ListItem key={brand.name} title={brand.name} href={`/brand/${brand.name.toLowerCase().replace(/ /g, "-").replace(/\//g, "")}`}>
+                  Explore {brand.name} products
                 </ListItem>
               ))}
             </ul>

@@ -18,7 +18,7 @@ import { apiService } from "@/services/api/api-service";
 import * as React from "react";
 
 export const NavigationSheet = () => {
-  const [brands, setBrands] = React.useState<string[]>([]);
+  const [brands, setBrands] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -58,11 +58,11 @@ export const NavigationSheet = () => {
                 <div className="grid grid-cols-2 gap-2 pl-2">
                   {brands.map((brand) => (
                     <a
-                      key={brand}
-                      href={`/brand/${brand.toLowerCase().replace(/ /g, "-").replace(/\//g, "")}`}
+                      key={brand.name}
+                      href={`/brand/${brand.name.toLowerCase().replace(/ /g, "-").replace(/\//g, "")}`}
                       className="text-sm text-muted-foreground hover:text-foreground py-1"
                     >
-                      {brand}
+                      {brand.name}
                     </a>
                   ))}
                 </div>
