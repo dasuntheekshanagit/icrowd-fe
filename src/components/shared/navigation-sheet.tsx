@@ -156,9 +156,6 @@ export const NavigationSheet = () => {
           <a href="/about" className="text-sm font-medium hover:underline">
             About Us
           </a>
-          <a href="/contact" className="text-sm font-medium hover:underline">
-            Contact
-          </a>
         </div>
       </SheetContent>
     </Sheet>

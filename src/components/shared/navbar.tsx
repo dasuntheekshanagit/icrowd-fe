@@ -19,7 +19,12 @@ const Navbar = () => {
           {/*>*/}
           {/*  Sign In*/}
           {/*</Button>*/}
-          <Button className="rounded-full">Contact Us</Button>
+          <Button 
+            className="rounded-full"
+            onClick={() => window.open("https://wa.me/15551234567", "_blank")}
+          >
+            Contact Us
+          </Button>
 
           {/* Mobile Menu */}
           <div className="md:hidden">
