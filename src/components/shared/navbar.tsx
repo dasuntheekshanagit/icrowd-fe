@@ -21,7 +21,7 @@ const Navbar = () => {
           {/*</Button>*/}
           <Button 
             className="rounded-full"
-            onClick={() => window.open("https://wa.me/15551234567", "_blank")}
+            onClick={() => window.open("https://wa.me/94714188143", "_blank")}
           >
             Contact Us
           </Button>

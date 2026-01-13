@@ -9,6 +9,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
+import { apiService } from "@/services/api/api-service"
 
 export function HeroCarousel() {
   const plugin = React.useRef(
@@ -17,6 +18,15 @@ export function HeroCarousel() {
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
+  const [slides, setSlides] = React.useState<any[]>([])
+
+  React.useEffect(() => {
+    const fetchSlides = async () => {
+      const data = await apiService.getHeroSlides()
+      setSlides(data)
+    }
+    fetchSlides()
+  }, [])
 
   React.useEffect(() => {
     if (!api) {
@@ -29,28 +39,11 @@ export function HeroCarousel() {
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1)
     })
-  }, [api])
+  }, [api, slides]) // Re-run when slides are loaded
 
-  const slides = [
-    {
-      id: 1,
-      title: "Welcome to iCrowd",
-      description: "The best platform for crowd management.",
-      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      id: 2,
-      title: "Analyze Data",
-      description: "Get insights from your crowd data.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      id: 3,
-      title: "Real-time Monitoring",
-      description: "Monitor your crowd in real-time.",
-      image: "https://images.unsplash.com/photo-1504384308090-c54be3855833?q=80&w=2842&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ]
+  if (slides.length === 0) {
+    return null // Or a loading skeleton
+  }
 
   return (
     <div className="w-full relative">
@@ -66,7 +59,7 @@ export function HeroCarousel() {
             <CarouselItem key={slide.id}>
               <div className="p-0">
                 <Card className="border-0 shadow-none bg-transparent rounded-none">
-                  <CardContent className="flex h-[33vh] min-h-[300px] items-center justify-center p-0 relative overflow-hidden rounded-none">
+                  <CardContent className="flex aspect-[3/2] w-full items-center justify-center p-0 relative overflow-hidden rounded-none md:aspect-[3/1] lg:aspect-[3/1] xl:aspect-[3/1] 2xl:aspect-[3/1] max-h-[600px]">
                     <img
                       src={slide.image}
                       alt={slide.title}

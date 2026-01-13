@@ -14,87 +14,23 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-const brands = [
-  "Anker",
-  "UGREEN",
-  "DJI",
-  "JBL",
-  "SONY",
-  "BASEUS",
-  "AppleCare / GNEXT",
-  "Samsung",
-  "WIWU",
-  "MI",
-  "Haylou",
-  "Hollyland",
-  "ASPOR",
-];
-
-const categories = [
-  {
-    title: "Earbuds",
-    href: "/category/earbuds",
-  },
-  {
-    title: "Powerbanks",
-    href: "/category/powerbanks",
-  },
-  {
-    title: "Headphones",
-    href: "/category/headphones",
-  },
-  {
-    title: "Charging Adapters & Cables",
-    href: "/category/charging",
-  },
-  {
-    title: "Smart Watches",
-    href: "/category/smart-watches",
-  },
-  {
-    title: "Bluetooth Speakers",
-    href: "/category/bluetooth-speakers",
-  },
-  {
-    title: "Mobile Gimbals",
-    href: "/category/mobile-gimbals",
-  },
-  {
-    title: "Wireless Mics",
-    href: "/category/wireless-mics",
-  },
-  {
-    title: "Drones",
-    href: "/category/drones",
-  },
-  {
-    title: "HUBS",
-    href: "/category/hubs",
-  },
-  {
-    title: "Phone Cases",
-    href: "/category/phone-cases",
-  },
-  {
-    title: "Studio Items",
-    href: "/category/studio-items",
-  },
-  {
-    title: "Pouches",
-    href: "/category/pouches",
-  },
-  {
-    title: "iPad Pencil",
-    href: "/category/ipad-pencil",
-  },
-  {
-    title: "iPad Covers",
-    href: "/category/ipad-covers",
-  },
-];
+import { apiService } from "@/services/api/api-service";
+import * as React from "react";
 
 export const NavigationSheet = () => {
+  const [brands, setBrands] = React.useState<string[]>([]);
+  const [categories, setCategories] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const brandsData = await apiService.getBrandList();
+      const categoriesData = await apiService.getCategoryList();
+      setBrands(brandsData);
+      setCategories(categoriesData);
+    };
+    fetchData();
+  }, []);
+
   return (
     <Sheet>
       <VisuallyHidden>
@@ -123,7 +59,7 @@ export const NavigationSheet = () => {
                   {brands.map((brand) => (
                     <a
                       key={brand}
-                      href={`/brand/${brand.toLowerCase().replace(/ /g, "-")}`}
+                      href={`/brand/${brand.toLowerCase().replace(/ /g, "-").replace(/\//g, "")}`}
                       className="text-sm text-muted-foreground hover:text-foreground py-1"
                     >
                       {brand}

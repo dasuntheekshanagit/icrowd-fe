@@ -43,16 +43,10 @@ export function Footer() {
                 <a href="/" className="text-muted-foreground hover:text-primary transition-colors">Home</a>
               </li>
               <li>
-                <a href="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</a>
-              </li>
-              <li>
                 <a href="/products" className="text-muted-foreground hover:text-primary transition-colors">Products</a>
               </li>
               <li>
-                <a href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</a>
-              </li>
-              <li>
-                <a href="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</a>
+                <a href="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</a>
               </li>
             </ul>
           </div>
@@ -61,9 +55,9 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4">Customer Service</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <a href="/faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a>
-              </li>
+              {/*<li>*/}
+              {/*  <a href="/faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a>*/}
+              {/*</li>*/}
               <li>
                 <a href="/shipping" className="text-muted-foreground hover:text-primary transition-colors">Shipping Policy</a>
               </li>
@@ -85,11 +79,19 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3 text-muted-foreground">
                 <MapPin className="w-5 h-5 shrink-0 text-primary" />
-                <span>123 Mobile Street, Tech City, TC 90210</span>
+                <span>Kandy</span>
+              </li>
+              <li className="flex items-start gap-3 text-muted-foreground">
+                <MapPin className="w-5 h-5 shrink-0 text-primary" />
+                <span>Kottawa </span>
+              </li>
+              <li className="flex items-start gap-3 text-muted-foreground">
+                <MapPin className="w-5 h-5 shrink-0 text-primary" />
+                <span>Matara</span>
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Phone className="w-5 h-5 shrink-0 text-primary" />
-                <span>+1 (555) 123-4567</span>
+                <span>+97 (71) 4188-143</span>
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Mail className="w-5 h-5 shrink-0 text-primary" />

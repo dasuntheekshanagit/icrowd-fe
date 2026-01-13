@@ -1,25 +1,8 @@
-import { MainLayout } from "@/layout/main-layout"
-import About from "@/pages/about"
-import Home from "@/pages/home"
-import ProductDetails from "@/pages/product-details"
-import Products from "@/pages/products/products"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { RouterProvider } from "react-router-dom"
+import { router } from "@/routes"
 
-export function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/category/:category" element={<Products />} />
-          <Route path="/brand/:brand" element={<Products />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  )
+function App() {
+  return <RouterProvider router={router} />
 }
 
 export default App
