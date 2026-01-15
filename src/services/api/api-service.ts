@@ -245,6 +245,8 @@ const moreProducts = [
     }
 ];
 
+const allProducts = [...products, ...moreProducts];
+
 export const apiService = {
     getBrandList: async () => {
         return brands;
@@ -260,5 +262,8 @@ export const apiService = {
     },
     getMoreProducts: async () => {
         return moreProducts;
+    },
+    getAllProducts: async () => {
+        return allProducts;
     }
 }

@@ -3,43 +3,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
+import { apiService } from "@/services/api/api-service"
 import { Search } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
-
-const categories = [
-  "Earbuds",
-  "Powerbanks",
-  "Headphones",
-  "Charging Adapters & Cables",
-  "Smart Watches",
-  "Bluetooth Speakers",
-  "Mobile Gimbals",
-  "Wireless Mics",
-  "Drones",
-  "HUBS",
-  "Phone Cases",
-  "Studio Items",
-  "Pouches",
-  "iPad Pencil",
-  "iPad Covers",
-]
-
-const brands = [
-  "Anker",
-  "UGREEN",
-  "DJI",
-  "JBL",
-  "SONY",
-  "BASEUS",
-  "AppleCare / GNEXT",
-  "Samsung",
-  "WIWU",
-  "MI",
-  "Haylou",
-  "Hollyland",
-  "ASPOR",
-]
 
 export function ProductFilters() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -51,27 +18,36 @@ export function ProductFilters() {
   const [selectedBrands, setSelectedBrands] = useState<string[]>(
     searchParams.getAll("brand")
   )
+  const [categories, setCategories] = useState<any[]>([])
+  const [brands, setBrands] = useState<any[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const categoriesData = await apiService.getCategoryList()
+      setCategories(categoriesData)
+      const brandsData = await apiService.getBrandList()
+      setBrands(brandsData)
+    }
+    fetchData()
+  }, [])
 
   useEffect(() => {
     const category = searchParams.get("category")
-    if (category) {
-      // Handle single category from URL (e.g. from nav menu)
-      // If it's a slug, we might need to map it back to the full name if they differ significantly
-      // For now assuming simple mapping or direct match
-      const matchedCategory = categories.find(c => c.toLowerCase().replace(/ /g, "-") === category.toLowerCase())
+    if (category && categories.length > 0) {
+      const matchedCategory = categories.find(c => c.title.toLowerCase().replace(/ /g, "-") === category.toLowerCase())
       if (matchedCategory) {
-          setSelectedCategories([matchedCategory])
+          setSelectedCategories([matchedCategory.title])
       }
     }
     
     const brand = searchParams.get("brand")
-    if (brand) {
-        const matchedBrand = brands.find(b => b.toLowerCase().replace(/ /g, "-").replace(/\//g, "") === brand.toLowerCase())
+    if (brand && brands.length > 0) {
+        const matchedBrand = brands.find(b => b.name.toLowerCase().replace(/ /g, "-").replace(/\//g, "") === brand.toLowerCase())
         if (matchedBrand) {
-            setSelectedBrands([matchedBrand])
+            setSelectedBrands([matchedBrand.name])
         }
     }
-  }, [])
+  }, [categories, brands]) // Run when data is loaded
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -86,12 +62,9 @@ export function ProductFilters() {
       else params.delete("search")
     }
 
-    // Handle other updates if needed, but for checkboxes we usually update state then sync to URL
-    // For simplicity in this demo, we'll just update the URL when filters change
     setSearchParams(params)
   }
   
-  // Sync state to URL params
   useEffect(() => {
       const params = new URLSearchParams(searchParams)
       
@@ -100,8 +73,6 @@ export function ProductFilters() {
       
       params.delete("brand")
       selectedBrands.forEach(b => params.append("brand", b))
-      
-      // Debounce price update or add apply button for price
       
       setSearchParams(params)
   }, [selectedCategories, selectedBrands])
@@ -159,13 +130,13 @@ export function ProductFilters() {
         <h3 className="font-semibold mb-4">Categories</h3>
         <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
           {categories.map((category) => (
-            <div key={category} className="flex items-center space-x-2">
+            <div key={category.title} className="flex items-center space-x-2">
               <Checkbox
-                id={`category-${category}`}
-                checked={selectedCategories.includes(category)}
-                onCheckedChange={() => toggleCategory(category)}
+                id={`category-${category.title}`}
+                checked={selectedCategories.includes(category.title)}
+                onCheckedChange={() => toggleCategory(category.title)}
               />
-              <Label htmlFor={`category-${category}`}>{category}</Label>
+              <Label htmlFor={`category-${category.title}`}>{category.title}</Label>
             </div>
           ))}
         </div>
@@ -175,13 +146,13 @@ export function ProductFilters() {
         <h3 className="font-semibold mb-4">Brands</h3>
         <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
           {brands.map((brand) => (
-            <div key={brand} className="flex items-center space-x-2">
+            <div key={brand.name} className="flex items-center space-x-2">
               <Checkbox
-                id={`brand-${brand}`}
-                checked={selectedBrands.includes(brand)}
-                onCheckedChange={() => toggleBrand(brand)}
+                id={`brand-${brand.name}`}
+                checked={selectedBrands.includes(brand.name)}
+                onCheckedChange={() => toggleBrand(brand.name)}
               />
-              <Label htmlFor={`brand-${brand}`}>{brand}</Label>
+              <Label htmlFor={`brand-${brand.name}`}>{brand.name}</Label>
             </div>
           ))}
         </div>

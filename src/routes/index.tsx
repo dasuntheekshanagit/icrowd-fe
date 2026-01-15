@@ -1,5 +1,8 @@
 import { MainLayout } from "@/layout/main-layout"
 import About from "@/pages/about"
+import AdminBrands from "@/pages/admin/brands/admin-brands"
+import AdminCategories from "@/pages/admin/categories/admin-categories"
+import AdminProducts from "@/pages/admin/products/admin-products"
 import Home from "@/pages/home"
 import ProductDetails from "@/pages/product-details"
 import Products from "@/pages/products/products"
@@ -32,6 +35,19 @@ export const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <ProductDetails />,
+      },
+      // Admin Routes (Unprotected for now)
+      {
+        path: "/admin/products",
+        element: <AdminProducts />,
+      },
+      {
+        path: "/admin/categories",
+        element: <AdminCategories />,
+      },
+      {
+        path: "/admin/brands",
+        element: <AdminBrands />,
       },
     ],
   },
