@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import {Card, CardContent} from "@/components/ui/card";
+import {Link} from "react-router-dom";
 
 interface BrandCardProps {
     name: string;
@@ -13,13 +13,14 @@ function slugifyBrand(name: string) {
         .replace(/\//g, "");
 }
 
-export function BrandCard({ name, logo }: BrandCardProps) {
+export function BrandCard({name, logo}: BrandCardProps) {
     return (
         <Link
             to={`/brand/${slugifyBrand(name)}`}
             className="group w-40 sm:w-48"
         >
-            <Card className="h-24 flex items-center justify-center p-4 bg-background hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <Card
+                className="h-24 flex items-center justify-center p-4 bg-background hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                 <CardContent className="p-0 flex items-center justify-center w-full h-full">
                     <img
                         src={logo}

@@ -1,9 +1,9 @@
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import {Card, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Link} from "react-router-dom";
 // import { Heart } from "lucide-react";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import {motion} from "framer-motion";
+import {useEffect, useState} from "react";
 
 type DiscountVariant = "sale" | "new" | "hot";
 
@@ -41,7 +41,18 @@ function getRemainingTime(end: string) {
     return `${hours}h ${minutes}m`;
 }
 
-export function ProductCard({id, name, image, category, brand, price, discountedPrice, discountVariant = "sale", offerEndsAt, stock}: ProductCardProps) {
+export function ProductCard({
+                                id,
+                                name,
+                                image,
+                                category,
+                                brand,
+                                price,
+                                discountedPrice,
+                                discountVariant = "sale",
+                                offerEndsAt,
+                                stock
+                            }: ProductCardProps) {
 
     const discount = calculateDiscount(price, discountedPrice);
     const [timeLeft, setTimeLeft] = useState<string | null>(
@@ -59,7 +70,8 @@ export function ProductCard({id, name, image, category, brand, price, discounted
 
     return (
         <Link to={`/product/${id}`} className="group block h-full">
-            <Card className="relative overflow-hidden flex flex-col h-full bg-background hover:shadow-lg transition-shadow">
+            <Card
+                className="relative overflow-hidden flex flex-col h-full bg-background hover:shadow-lg transition-shadow">
 
                 {/*<button*/}
                 {/*    className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition"*/}
@@ -70,8 +82,8 @@ export function ProductCard({id, name, image, category, brand, price, discounted
 
                 {discount && (
                     <motion.div
-                        initial={{ x: -30, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
+                        initial={{x: -30, opacity: 0}}
+                        animate={{x: 0, opacity: 1}}
                         className={`absolute top-2 left-2 z-20 text-xs font-semibold px-2 py-1 rounded ${ribbonStyles[discountVariant]}`}
                     >
                         -{discount}%
@@ -80,8 +92,8 @@ export function ProductCard({id, name, image, category, brand, price, discounted
 
                 {!discount && discountVariant && discountVariant !== 'sale' && (
                     <motion.div
-                        initial={{ x: -30, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
+                        initial={{x: -30, opacity: 0}}
+                        animate={{x: 0, opacity: 1}}
                         className={`absolute top-2 left-2 z-20 text-xs font-semibold px-2 py-1 rounded ${ribbonStyles[discountVariant]}`}
                     >
                         {discountVariant.toUpperCase()}

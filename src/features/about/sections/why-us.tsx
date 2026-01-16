@@ -1,6 +1,6 @@
-import {FeatureCard} from "@/features/about/components/about-feature-card.tsx";
+import {FeatureCard} from "@/features/about/components/about-feature-card";
 
-const whyUsCards = [ {
+const whyUsCards = [{
     title: "Premium Quality",
     description: "We only stock products from reputable global brands.",
 },

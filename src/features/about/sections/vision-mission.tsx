@@ -1,4 +1,4 @@
-import {InfoCard} from "@/features/about/components/medium-card.tsx";
+import {InfoCard} from "@/features/about/components/medium-card";
 
 const infoCards = [
     {
@@ -17,15 +17,15 @@ const infoCards = [
 
 export function VisionMission() {
     return (
-    <div className="grid md:grid-cols-2 gap-8 mb-16">
-        {infoCards.map((card) => (
-            <InfoCard
-                key={card.title}
-                title={card.title}
-                description={card.description}
-                className={card.className}
-            />
-        ))}
-    </div>
-);
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+            {infoCards.map((card) => (
+                <InfoCard
+                    key={card.title}
+                    title={card.title}
+                    description={card.description}
+                    className={card.className}
+                />
+            ))}
+        </div>
+    );
 }

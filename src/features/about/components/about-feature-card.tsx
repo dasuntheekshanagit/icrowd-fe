@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import {Card, CardContent} from "@/components/ui/card";
 
 interface FeatureCardProps {
     title: string;
@@ -6,7 +6,7 @@ interface FeatureCardProps {
     className?: string;
 }
 
-export function FeatureCard({ title, description, className }: FeatureCardProps) {
+export function FeatureCard({title, description, className}: FeatureCardProps) {
     return (
         <Card
             className={`text-center hover:shadow-md transition-shadow ${className ?? ""}`}

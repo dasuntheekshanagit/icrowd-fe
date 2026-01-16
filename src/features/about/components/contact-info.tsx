@@ -1,5 +1,5 @@
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
-import {ContactItem} from "@/features/about/components/contact-item.tsx";
+import {Clock, Mail, MapPin, Phone} from "lucide-react";
+import {ContactItem} from "@/features/about/components/contact-item";
 
 export function ContactInfo() {
     return (
@@ -14,7 +14,7 @@ export function ContactInfo() {
             <div className="space-y-6">
                 <ContactItem
                     title="Visit Us"
-                    icon={<MapPin className="w-6 h-6 text-primary" />}
+                    icon={<MapPin className="w-6 h-6 text-primary"/>}
                 >
                     <p className="text-muted-foreground">
                         Kandy/Kottawa/Matara
@@ -23,7 +23,7 @@ export function ContactInfo() {
 
                 <ContactItem
                     title="Call Us"
-                    icon={<Phone className="w-6 h-6 text-primary" />}
+                    icon={<Phone className="w-6 h-6 text-primary"/>}
                 >
                     <p className="text-muted-foreground">+94 (71) 4188-143</p>
                     <p className="text-sm text-muted-foreground">
@@ -33,14 +33,14 @@ export function ContactInfo() {
 
                 <ContactItem
                     title="Email Us"
-                    icon={<Mail className="w-6 h-6 text-primary" />}
+                    icon={<Mail className="w-6 h-6 text-primary"/>}
                 >
                     <p className="text-muted-foreground">support@icrowd.com</p>
                 </ContactItem>
 
                 <ContactItem
                     title="Opening Hours"
-                    icon={<Clock className="w-6 h-6 text-primary" />}
+                    icon={<Clock className="w-6 h-6 text-primary"/>}
                 >
                     <p className="text-muted-foreground">
                         Monday - Friday: 9:00 AM - 6:00 PM

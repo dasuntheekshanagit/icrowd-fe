@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import {Card, CardContent} from "@/components/ui/card";
 
 interface InfoCardProps {
     title: string;
@@ -6,7 +6,7 @@ interface InfoCardProps {
     className?: string;
 }
 
-export function InfoCard({ title, description, className }: InfoCardProps) {
+export function InfoCard({title, description, className}: InfoCardProps) {
     return (
         <Card className={`border-none ${className}`}>
             <CardContent className="p-8">
