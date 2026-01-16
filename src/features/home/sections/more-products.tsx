@@ -1,7 +1,7 @@
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import { ProductCard } from "@/components/shared/product-card"
 import { apiService } from "@/services/api/api-service"
+import { ArrowRight } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
@@ -30,21 +30,18 @@ export function MoreProducts() {
         
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {products.map((product) => (
-             <Link key={product.id} to={`/product/${product.id}`} className="block h-full">
-               <Card className="overflow-hidden flex flex-col h-full bg-background hover:shadow-lg transition-shadow">
-                 <div className="aspect-square relative bg-secondary/20">
-                   <img src={product.image} alt={product.name} className="object-cover w-full h-full hover:scale-105 transition-transform duration-300" />
-                 </div>
-                 <CardHeader className="p-3 pb-0">
-                   <CardTitle className="text-sm font-medium line-clamp-2 h-10" title={product.name}>{product.name}</CardTitle>
-                   <p className="text-xs text-muted-foreground">{product.category}</p>
-                 </CardHeader>
-                 <CardFooter className="p-3 pt-2 mt-auto flex flex-col items-start gap-2">
-                   <span className="font-bold text-sm">{product.price}</span>
-                   <Button size="sm" variant="outline" className="w-full h-8 text-xs">View Details</Button>
-                 </CardFooter>
-               </Card>
-             </Link>
+             <ProductCard 
+               key={product.id} 
+               id={product.id}
+               name={product.name}
+               image={product.image}
+               category={product.category}
+               price={product.price}
+               discountedPrice={product.discountedPrice}
+               discountVariant={product.discountVariant}
+               offerEndsAt={product.offerEndsAt}
+               stock={product.stock}
+             />
           ))}
         </div>
         

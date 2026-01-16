@@ -4,7 +4,7 @@ import AdminBrands from "@/pages/admin/brands/admin-brands"
 import AdminCategories from "@/pages/admin/categories/admin-categories"
 import AdminProducts from "@/pages/admin/products/admin-products"
 import Home from "@/pages/home/home.tsx"
-import ProductDetails from "@/pages/product-details"
+import ProductDetails from "@/pages/product-details/product-details.tsx"
 import Products from "@/pages/products/products"
 import { createBrowserRouter } from "react-router-dom"
 
