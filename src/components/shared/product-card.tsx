@@ -12,6 +12,7 @@ interface ProductCardProps {
     name: string;
     image: string;
     category: string;
+    brand?: string;
     price: number;
     discountedPrice?: number;
     discountVariant?: DiscountVariant;
@@ -40,7 +41,7 @@ function getRemainingTime(end: string) {
     return `${hours}h ${minutes}m`;
 }
 
-export function ProductCard({id, name, image, category, price, discountedPrice, discountVariant = "sale", offerEndsAt, stock,}: ProductCardProps) {
+export function ProductCard({id, name, image, category, brand, price, discountedPrice, discountVariant = "sale", offerEndsAt, stock}: ProductCardProps) {
 
     const discount = calculateDiscount(price, discountedPrice);
     const [timeLeft, setTimeLeft] = useState<string | null>(
@@ -77,6 +78,16 @@ export function ProductCard({id, name, image, category, price, discountedPrice, 
                     </motion.div>
                 )}
 
+                {!discount && discountVariant && discountVariant !== 'sale' && (
+                    <motion.div
+                        initial={{ x: -30, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        className={`absolute top-2 left-2 z-20 text-xs font-semibold px-2 py-1 rounded ${ribbonStyles[discountVariant]}`}
+                    >
+                        {discountVariant.toUpperCase()}
+                    </motion.div>
+                )}
+
                 {stock !== undefined && stock <= 5 && stock > 0 && (
                     <div className="absolute top-2 left-2 z-20 bg-black/70 text-white text-xs px-2 py-1 rounded mt-8">
                         Only {stock} left
@@ -95,7 +106,15 @@ export function ProductCard({id, name, image, category, price, discountedPrice, 
                     <CardTitle className="text-sm font-medium line-clamp-2 h-10">
                         {name}
                     </CardTitle>
-                    <p className="text-xs text-muted-foreground">{category}</p>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <span>{category}</span>
+                        {brand && (
+                            <>
+                                <span>•</span>
+                                <span className="font-medium text-foreground/80">{brand}</span>
+                            </>
+                        )}
+                    </div>
                 </CardHeader>
 
                 <CardFooter className="p-3 pt-2 mt-auto flex flex-col items-start gap-1 w-full">

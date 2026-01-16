@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button.tsx"
+import { Card } from "@/components/ui/card.tsx"
 import { ArrowLeft, Minus, Plus, ShoppingCart, Star } from "lucide-react"
 import { useState } from "react"
 import { Link, useParams } from "react-router-dom"

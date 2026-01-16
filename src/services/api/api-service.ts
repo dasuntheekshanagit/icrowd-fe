@@ -126,6 +126,7 @@ const products = [
         price: 79.99,
         image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=2788&auto=format&fit=crop",
         category: "Audio",
+        brand: "Anker",
         featured: true,
         discountedPrice: 59.99,
         discountVariant: "sale",
@@ -138,6 +139,7 @@ const products = [
         price: 759.00,
         image: "https://images.unsplash.com/photo-1579829366248-204fe8413f31?q=80&w=2940&auto=format&fit=crop",
         category: "Photography",
+        brand: "DJI",
         featured: true,
         stock: 3
     },
@@ -147,6 +149,7 @@ const products = [
         price: 1299.99,
         image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=2941&auto=format&fit=crop",
         category: "Phones",
+        brand: "Samsung",
         featured: true,
         discountVariant: "new"
     },
@@ -156,6 +159,7 @@ const products = [
         price: 129.95,
         image: "https://images.unsplash.com/photo-1612444530582-fc66183b16f7?q=80&w=2864&auto=format&fit=crop",
         category: "Audio",
+        brand: "JBL",
         featured: true,
         discountedPrice: 99.95,
         discountVariant: "hot"
@@ -166,6 +170,7 @@ const products = [
         price: 74.99,
         image: "https://images.unsplash.com/photo-1620799140408-ed5341cd2431?q=80&w=3072&auto=format&fit=crop",
         category: "Power & Charging",
+        brand: "UGREEN",
         featured: true
     },
     {
@@ -174,6 +179,7 @@ const products = [
         price: 399.00,
         image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?q=80&w=2864&auto=format&fit=crop",
         category: "Smart Wearables",
+        brand: "AppleCare / GNEXT",
         featured: true,
         stock: 2
     },
@@ -183,6 +189,7 @@ const products = [
         price: 348.00,
         image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=2788&auto=format&fit=crop",
         category: "Audio",
+        brand: "SONY",
         featured: true
     },
     {
@@ -191,6 +198,7 @@ const products = [
         price: 59.99,
         image: "https://images.unsplash.com/photo-1620799140408-ed5341cd2431?q=80&w=3072&auto=format&fit=crop",
         category: "Power & Charging",
+        brand: "BASEUS",
         featured: true,
         discountedPrice: 49.99,
         discountVariant: "sale"
@@ -201,6 +209,7 @@ const products = [
         price: 1199.00,
         image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=2940&auto=format&fit=crop",
         category: "Phones",
+        brand: "AppleCare / GNEXT",
         featured: true
     },
     {
@@ -209,6 +218,7 @@ const products = [
         price: 399.99,
         image: "https://images.unsplash.com/photo-1564466021183-a4268fce765e?q=80&w=2787&auto=format&fit=crop",
         category: "Photography",
+        brand: "GoPro",
         featured: true
     },
     {
@@ -217,6 +227,7 @@ const products = [
         price: 149.00,
         image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=2832&auto=format&fit=crop",
         category: "Audio",
+        brand: "Hollyland",
         featured: false,
         discountVariant: "new"
     },
@@ -226,6 +237,7 @@ const products = [
         price: 45.00,
         image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?q=80&w=2727&auto=format&fit=crop",
         category: "Smart Wearables",
+        brand: "Haylou",
         featured: false
     },
     {
@@ -234,6 +246,7 @@ const products = [
         price: 25.00,
         image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?q=80&w=2940&auto=format&fit=crop",
         category: "Power & Charging",
+        brand: "ASPOR",
         featured: false,
         stock: 4
     },
@@ -243,6 +256,7 @@ const products = [
         price: 229.99,
         image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=2941&auto=format&fit=crop",
         category: "Audio",
+        brand: "Samsung",
         featured: false,
         discountedPrice: 199.99,
         discountVariant: "sale"
@@ -253,6 +267,7 @@ const products = [
         price: 29.00,
         image: "https://images.unsplash.com/photo-1621252179027-94459d27d3ee?q=80&w=2940&auto=format&fit=crop",
         category: "Accessories",
+        brand: "AppleCare / GNEXT",
         featured: false
     }
 ];

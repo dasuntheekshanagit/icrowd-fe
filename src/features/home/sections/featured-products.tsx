@@ -24,6 +24,7 @@ export function FeaturedProducts() {
              name={product.name}
              image={product.image}
              category={product.category}
+             brand={product.brand}
              price={product.price}
              discountedPrice={product.discountedPrice}
              discountVariant={product.discountVariant}
