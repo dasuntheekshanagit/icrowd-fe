@@ -17,7 +17,7 @@ export function ContactInfo() {
                     icon={<MapPin className="w-6 h-6 text-primary" />}
                 >
                     <p className="text-muted-foreground">
-                        123 Mobile Street, Tech City, TC 90210
+                        Kandy/Kottawa/Matara
                     </p>
                 </ContactItem>
 
@@ -25,7 +25,7 @@ export function ContactInfo() {
                     title="Call Us"
                     icon={<Phone className="w-6 h-6 text-primary" />}
                 >
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                    <p className="text-muted-foreground">+94 (71) 4188-143</p>
                     <p className="text-sm text-muted-foreground">
                         Mon - Fri, 9am - 6pm
                     </p>
