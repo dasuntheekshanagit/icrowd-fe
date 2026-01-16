@@ -30,8 +30,8 @@ export function ProductDetailsInfo({ product }: ProductDetailsInfoProps) {
         <div className="flex items-baseline gap-3">
             {product.discountedPrice ? (
                 <>
-                    <p className="text-3xl font-bold text-primary">${product.discountedPrice}</p>
-                    <p className="text-xl text-muted-foreground line-through">${product.price}</p>
+                    <p className="text-3xl font-bold text-primary">LKR {product.discountedPrice}</p>
+                    <p className="text-xl text-muted-foreground line-through">LKR {product.price}</p>
                     <span className="bg-destructive text-destructive-foreground text-xs font-bold px-2 py-1 rounded-full self-center">
                         SAVE {Math.round(((product.price - product.discountedPrice) / product.price) * 100)}%
                     </span>

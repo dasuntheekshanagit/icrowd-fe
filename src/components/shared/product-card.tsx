@@ -122,14 +122,14 @@ export function ProductCard({id, name, image, category, brand, price, discounted
                     {discountedPrice ? (
                         <div className="flex items-center gap-2">
               <span className="font-bold text-sm text-primary">
-                ${discountedPrice.toFixed(2)}
+                LKR {discountedPrice.toFixed(2)}
               </span>
                             <span className="text-xs line-through text-muted-foreground">
-                ${price.toFixed(2)}
+                LKR {price.toFixed(2)}
               </span>
                         </div>
                     ) : (
-                        <span className="font-bold text-sm">${price.toFixed(2)}</span>
+                        <span className="font-bold text-sm">LKR {price.toFixed(2)}</span>
                     )}
 
                     {timeLeft && (
