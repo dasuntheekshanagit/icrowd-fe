@@ -6,10 +6,14 @@ import { useSearchParams } from "react-router-dom"
 
 export default function Products() {
   const [products, setProducts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchParams] = useSearchParams()
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true)
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000))
       const data = await apiService.getAllProducts()
       
       let filtered = data
@@ -30,6 +34,7 @@ export default function Products() {
       }
 
       setProducts(filtered)
+      setLoading(false)
     }
     fetchProducts()
   }, [searchParams])
@@ -38,7 +43,7 @@ export default function Products() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row gap-8">
         <ProductSidebar />
-        <ProductGrid products={products} />
+        <ProductGrid products={products} loading={loading} />
       </div>
     </div>
   )
