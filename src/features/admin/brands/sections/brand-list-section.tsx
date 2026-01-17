@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { BrandFormDialog } from "@/features/admin/brands/components/brand-form-dialog"
 import { BrandTable } from "@/features/admin/brands/components/brand-table"
 import { apiService } from "@/services/api/api-service"
-import { Plus } from "lucide-react"
+import { Plus, Loader2 } from "lucide-react"
 import { useState } from "react"
 
 interface BrandListSectionProps {
@@ -13,6 +13,7 @@ interface BrandListSectionProps {
 export function BrandListSection({ brands, onRefresh }: BrandListSectionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedBrand, setSelectedBrand] = useState<any>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const handleAdd = () => {
     setSelectedBrand(null)
@@ -22,6 +23,20 @@ export function BrandListSection({ brands, onRefresh }: BrandListSectionProps) {
   const handleEdit = (brand: any) => {
     setSelectedBrand(brand)
     setIsDialogOpen(true)
+  }
+
+  const handleDelete = async (id: string) => {
+    if (confirm("Are you sure you want to delete this brand?")) {
+        setDeletingId(id)
+        try {
+            await apiService.deleteBrand(id)
+            onRefresh()
+        } catch (error) {
+            console.error("Failed to delete brand", error)
+        } finally {
+            setDeletingId(null)
+        }
+    }
   }
 
   const handleSave = async (brand: any) => {
@@ -43,7 +58,15 @@ export function BrandListSection({ brands, onRefresh }: BrandListSectionProps) {
         </Button>
       </div>
 
-      <BrandTable brands={brands} onEdit={handleEdit} />
+      {deletingId && (
+          <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
+              <div className="bg-white p-4 rounded-md flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" /> Deleting...
+              </div>
+          </div>
+      )}
+
+      <BrandTable brands={brands} onEdit={handleEdit} onDelete={handleDelete} />
 
       <BrandFormDialog 
         open={isDialogOpen} 

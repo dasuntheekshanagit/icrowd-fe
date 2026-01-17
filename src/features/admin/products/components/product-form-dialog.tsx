@@ -14,7 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState, useEffect } from "react"
 import { apiService } from "@/services/api/api-service"
 import { convertFileToBase64 } from "@/lib/utils"
-import { Loader2 } from "lucide-react"
+import { Loader2, X, Plus } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface ProductFormDialogProps {
   open: boolean
@@ -28,15 +29,23 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
     name: "",
     price: "",
     image: "",
+    images: [] as string[],
     category: "",
     brand: "",
     description: "",
     stock: "",
+    featured: false,
+    discountedPrice: "",
+    discountVariant: "",
+    offerEndsAt: "",
+    features: [] as string[],
   })
   const [categories, setCategories] = useState<any[]>([])
   const [brands, setBrands] = useState<any[]>([])
-  const [file, setFile] = useState<File | null>(null)
+  const [mainImageFile, setMainImageFile] = useState<File | null>(null)
+  const [additionalFiles, setAdditionalFiles] = useState<File[]>([])
   const [uploading, setUploading] = useState(false)
+  const [featureInput, setFeatureInput] = useState("")
 
   useEffect(() => {
     if (product) {
@@ -44,23 +53,36 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
         name: product.name || "",
         price: product.price || "",
         image: product.image || "",
+        images: product.images || [],
         category: product.category || "",
         brand: product.brand || "",
         description: product.description || "",
         stock: product.stock || "",
+        featured: product.featured || false,
+        discountedPrice: product.discountedPrice || "",
+        discountVariant: product.discountVariant || "",
+        offerEndsAt: product.offerEndsAt || "",
+        features: product.features || [],
       })
     } else {
       setFormData({
         name: "",
         price: "",
         image: "",
+        images: [],
         category: "",
         brand: "",
         description: "",
         stock: "",
+        featured: false,
+        discountedPrice: "",
+        discountVariant: "",
+        offerEndsAt: "",
+        features: [],
       })
     }
-    setFile(null)
+    setMainImageFile(null)
+    setAdditionalFiles([])
   }, [product, open])
 
   useEffect(() => {
@@ -73,21 +95,71 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
     fetchData()
   }, [])
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0])
+      setMainImageFile(e.target.files[0])
     }
+  }
+
+  const handleAdditionalImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files)
+      setAdditionalFiles(prev => [...prev, ...files])
+    }
+  }
+
+  const removeAdditionalFile = (index: number) => {
+    setAdditionalFiles(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const removeExistingAdditionalImage = (index: number) => {
+    setFormData(prev => ({
+        ...prev,
+        images: prev.images.filter((_, i) => i !== index)
+    }))
+  }
+
+  const addFeature = () => {
+    if (featureInput.trim()) {
+        setFormData(prev => ({
+            ...prev,
+            features: [...prev.features, featureInput.trim()]
+        }))
+        setFeatureInput("")
+    }
+  }
+
+  const removeFeature = (index: number) => {
+    setFormData(prev => ({
+        ...prev,
+        features: prev.features.filter((_, i) => i !== index)
+    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setUploading(true)
     try {
-        let imageUrl = formData.image
-        if (file) {
-            imageUrl = await convertFileToBase64(file)
+        let mainImageUrl = formData.image
+        if (mainImageFile) {
+            mainImageUrl = await convertFileToBase64(mainImageFile)
         }
-        onSave({ ...product, ...formData, image: imageUrl })
+
+        const newAdditionalImages = await Promise.all(
+            additionalFiles.map(file => convertFileToBase64(file))
+        )
+
+        const finalImages = [...formData.images, ...newAdditionalImages]
+
+        onSave({ 
+            ...product, 
+            ...formData, 
+            image: mainImageUrl,
+            images: finalImages,
+            price: Number(formData.price),
+            stock: Number(formData.stock),
+            discountedPrice: formData.discountedPrice ? Number(formData.discountedPrice) : undefined,
+        })
         onOpenChange(false)
     } catch (error) {
         console.error("Error processing file:", error)
@@ -98,7 +170,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{product ? "Edit Product" : "Add Product"}</DialogTitle>
           <DialogDescription>
@@ -106,106 +178,217 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="price" className="text-right">
-              Price
-            </Label>
-            <Input
-              id="price"
-              type="number"
-              value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="category" className="text-right">
-              Category
-            </Label>
-            <Select 
-                value={formData.category} 
-                onValueChange={(value) => setFormData({ ...formData, category: value })}
-            >
-              <SelectTrigger className="col-span-3">
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((c) => (
-                    <SelectItem key={c.title} value={c.title}>{c.title}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="brand" className="text-right">
-              Brand
-            </Label>
-            <Select 
-                value={formData.brand} 
-                onValueChange={(value) => setFormData({ ...formData, brand: value })}
-            >
-              <SelectTrigger className="col-span-3">
-                <SelectValue placeholder="Select a brand" />
-              </SelectTrigger>
-              <SelectContent>
-                {brands.map((b) => (
-                    <SelectItem key={b.name} value={b.name}>{b.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="image" className="text-right">
-              Image
-            </Label>
-            <div className="col-span-3">
+          <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
                 <Input
-                    id="image"
-                    type="file"
-                    onChange={handleFileChange}
-                    className="mb-2"
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
-                {formData.image && !file && (
-                    <div className="text-sm text-gray-500">
-                        {formData.image.startsWith('data:') ? 'Current image: [Base64 Image]' : `Current image: ${formData.image}`}
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="price">Price</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  value={formData.price}
+                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                />
+              </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="category">Category</Label>
+                <Select 
+                    value={formData.category} 
+                    onValueChange={(value) => setFormData({ ...formData, category: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((c) => (
+                        <SelectItem key={c.title} value={c.title}>{c.title}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="brand">Brand</Label>
+                <Select 
+                    value={formData.brand} 
+                    onValueChange={(value) => setFormData({ ...formData, brand: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a brand" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {brands.map((b) => (
+                        <SelectItem key={b.name} value={b.name}>{b.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+          </div>
+
+          <div className="grid gap-2">
+            <Label>Main Image</Label>
+            <Input
+                type="file"
+                onChange={handleMainImageChange}
+                accept="image/*"
+            />
+            {(formData.image || mainImageFile) && (
+                <div className="mt-2">
+                    <p className="text-sm text-gray-500 mb-1">Preview:</p>
+                    <img 
+                        src={mainImageFile ? URL.createObjectURL(mainImageFile) : formData.image} 
+                        alt="Main Preview" 
+                        className="h-32 object-contain border rounded"
+                    />
+                </div>
+            )}
+          </div>
+
+          <div className="grid gap-2">
+            <Label>Additional Images</Label>
+            <Input
+                type="file"
+                multiple
+                onChange={handleAdditionalImagesChange}
+                accept="image/*"
+            />
+            <div className="flex flex-wrap gap-2 mt-2">
+                {formData.images.map((img, index) => (
+                    <div key={`existing-${index}`} className="relative group">
+                        <img src={img} alt={`Existing ${index}`} className="h-20 w-20 object-cover border rounded" />
+                        <button 
+                            type="button"
+                            onClick={() => removeExistingAdditionalImage(index)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                            <X className="h-3 w-3" />
+                        </button>
                     </div>
-                )}
+                ))}
+                {additionalFiles.map((file, index) => (
+                    <div key={`new-${index}`} className="relative group">
+                        <img src={URL.createObjectURL(file)} alt={`New ${index}`} className="h-20 w-20 object-cover border rounded" />
+                        <button 
+                            type="button"
+                            onClick={() => removeAdditionalFile(index)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                            <X className="h-3 w-3" />
+                        </button>
+                    </div>
+                ))}
             </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="stock" className="text-right">
-              Stock
-            </Label>
-            <Input
-              id="stock"
-              type="number"
-              value={formData.stock}
-              onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-              className="col-span-3"
-            />
+
+          <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="stock">Stock</Label>
+                <Input
+                  id="stock"
+                  type="number"
+                  value={formData.stock}
+                  onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                />
+              </div>
+              <div className="flex items-center space-x-2 mt-8">
+                <Checkbox 
+                    id="featured" 
+                    checked={formData.featured}
+                    onCheckedChange={(checked) => setFormData({ ...formData, featured: checked as boolean })}
+                />
+                <Label htmlFor="featured">Featured Product</Label>
+              </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Description
-            </Label>
+
+          <div className="grid grid-cols-3 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="discountedPrice">Discounted Price</Label>
+                <Input
+                  id="discountedPrice"
+                  type="number"
+                  value={formData.discountedPrice}
+                  onChange={(e) => setFormData({ ...formData, discountedPrice: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="discountVariant">Discount Variant</Label>
+                <Select 
+                    value={formData.discountVariant} 
+                    onValueChange={(value) => setFormData({ ...formData, discountVariant: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select variant" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sale">Sale</SelectItem>
+                    <SelectItem value="new">New</SelectItem>
+                    <SelectItem value="hot">Hot</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="offerEndsAt">Offer Ends At</Label>
+                <Input
+                  id="offerEndsAt"
+                  type="date"
+                  value={formData.offerEndsAt}
+                  onChange={(e) => setFormData({ ...formData, offerEndsAt: e.target.value })}
+                />
+              </div>
+          </div>
+
+          <div className="grid gap-2">
+            <Label>Features</Label>
+            <div className="flex gap-2">
+                <Input 
+                    value={featureInput}
+                    onChange={(e) => setFeatureInput(e.target.value)}
+                    placeholder="Add a feature"
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addFeature();
+                        }
+                    }}
+                />
+                <Button type="button" onClick={addFeature} size="icon">
+                    <Plus className="h-4 w-4" />
+                </Button>
+            </div>
+            <ul className="list-disc pl-5 space-y-1">
+                {formData.features.map((feature, index) => (
+                    <li key={index} className="text-sm flex justify-between items-center group">
+                        <span>{feature}</span>
+                        <button 
+                            type="button" 
+                            onClick={() => removeFeature(index)}
+                            className="text-red-500 opacity-0 group-hover:opacity-100"
+                        >
+                            <X className="h-3 w-3" />
+                        </button>
+                    </li>
+                ))}
+            </ul>
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="col-span-3"
+              className="min-h-[100px]"
             />
           </div>
+
           <DialogFooter>
             <Button type="submit" disabled={uploading}>
                 {uploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

@@ -5,9 +5,10 @@ import {Edit, Trash2} from "lucide-react"
 interface ProductTableProps {
     products: any[]
     onEdit: (product: any) => void
+    onDelete: (id: string) => void
 }
 
-export function ProductTable({products, onEdit}: ProductTableProps) {
+export function ProductTable({products, onEdit, onDelete}: ProductTableProps) {
     return (
         <div className="border rounded-md">
             <Table>
@@ -41,7 +42,12 @@ export function ProductTable({products, onEdit}: ProductTableProps) {
                                 <Button variant="ghost" size="icon" onClick={() => onEdit(product)}>
                                     <Edit className="h-4 w-4"/>
                                 </Button>
-                                <Button variant="ghost" size="icon" className="text-destructive">
+                                <Button 
+                                    variant="ghost" 
+                                    size="icon" 
+                                    className="text-destructive"
+                                    onClick={() => onDelete(product.id)}
+                                >
                                     <Trash2 className="h-4 w-4"/>
                                 </Button>
                             </TableCell>

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { CategoryFormDialog } from "@/features/admin/categories/components/category-form-dialog"
 import { CategoryTable } from "@/features/admin/categories/components/category-table"
 import { apiService } from "@/services/api/api-service"
-import { Plus } from "lucide-react"
+import { Plus, Loader2 } from "lucide-react"
 import { useState } from "react"
 
 interface CategoryListSectionProps {
@@ -13,6 +13,7 @@ interface CategoryListSectionProps {
 export function CategoryListSection({ categories, onRefresh }: CategoryListSectionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<any>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const handleAdd = () => {
     setSelectedCategory(null)
@@ -22,6 +23,20 @@ export function CategoryListSection({ categories, onRefresh }: CategoryListSecti
   const handleEdit = (category: any) => {
     setSelectedCategory(category)
     setIsDialogOpen(true)
+  }
+
+  const handleDelete = async (id: string) => {
+    if (confirm("Are you sure you want to delete this category?")) {
+        setDeletingId(id)
+        try {
+            await apiService.deleteCategory(id)
+            onRefresh()
+        } catch (error) {
+            console.error("Failed to delete category", error)
+        } finally {
+            setDeletingId(null)
+        }
+    }
   }
 
   const handleSave = async (category: any) => {
@@ -43,7 +58,15 @@ export function CategoryListSection({ categories, onRefresh }: CategoryListSecti
         </Button>
       </div>
 
-      <CategoryTable categories={categories} onEdit={handleEdit} />
+      {deletingId && (
+          <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
+              <div className="bg-white p-4 rounded-md flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" /> Deleting...
+              </div>
+          </div>
+      )}
+
+      <CategoryTable categories={categories} onEdit={handleEdit} onDelete={handleDelete} />
 
       <CategoryFormDialog 
         open={isDialogOpen} 

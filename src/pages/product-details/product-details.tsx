@@ -21,26 +21,21 @@ export default function ProductDetails() {
       const foundProduct = products.find((p: any) => String(p.id) === id)
       
       if (foundProduct) {
-          // Mock additional details that might come from a detailed API response
+          // Construct the images array: Main image + additional images
+          // Ensure we don't have duplicates if the main image is also in the additional images list (though logic should prevent this)
+          // Also handle cases where images might be undefined
+          const galleryImages = [
+              foundProduct.image, 
+              ...(foundProduct.images || [])
+          ].filter(Boolean); // Remove empty strings/nulls
+
           setProduct({
               ...foundProduct,
-              description: foundProduct.description || "High-resolution audio with active noise cancelling. Enjoy crystal clear sound and deep bass with these premium headphones.",
-              features: foundProduct.features || [
-                  "Active Noise Cancelling",
-                  "Hi-Res Audio",
-                  "40-Hour Playtime",
-                  "Fast Charging",
-                  "Multi-Point Connection"
-              ],
-              rating: foundProduct.rating || 4.5,
-              reviews: foundProduct.reviews || 128,
-              // Mock multiple images for gallery
-              images: [
-                  foundProduct.image,
-                  foundProduct.image, // Placeholder for different angles
-                  foundProduct.image,
-                  foundProduct.image
-              ]
+              description: foundProduct.description || "No description available.",
+              features: foundProduct.features || [],
+              rating: foundProduct.rating || 0,
+              reviews: foundProduct.reviews || 0,
+              images: galleryImages.length > 0 ? galleryImages : [foundProduct.image]
           })
       }
       setLoading(false)

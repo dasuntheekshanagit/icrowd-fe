@@ -5,9 +5,10 @@ import {Edit, Trash2} from "lucide-react"
 interface BrandTableProps {
     brands: any[]
     onEdit: (brand: any) => void
+    onDelete: (id: string) => void
 }
 
-export function BrandTable({brands, onEdit}: BrandTableProps) {
+export function BrandTable({brands, onEdit, onDelete}: BrandTableProps) {
     return (
         <div className="border rounded-md">
             <Table>
@@ -20,7 +21,7 @@ export function BrandTable({brands, onEdit}: BrandTableProps) {
                 </TableHeader>
                 <TableBody>
                     {brands.map((brand) => (
-                        <TableRow key={brand.name}>
+                        <TableRow key={brand.id}>
                             <TableCell>
                                 <img
                                     src={brand.logo}
@@ -33,7 +34,12 @@ export function BrandTable({brands, onEdit}: BrandTableProps) {
                                 <Button variant="ghost" size="icon" onClick={() => onEdit(brand)}>
                                     <Edit className="h-4 w-4"/>
                                 </Button>
-                                <Button variant="ghost" size="icon" className="text-destructive">
+                                <Button 
+                                    variant="ghost" 
+                                    size="icon" 
+                                    className="text-destructive"
+                                    onClick={() => onDelete(brand.id)}
+                                >
                                     <Trash2 className="h-4 w-4"/>
                                 </Button>
                             </TableCell>

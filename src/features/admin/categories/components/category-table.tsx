@@ -5,9 +5,10 @@ import {Edit, Trash2} from "lucide-react"
 interface CategoryTableProps {
     categories: any[]
     onEdit: (category: any) => void
+    onDelete: (id: string) => void
 }
 
-export function CategoryTable({categories, onEdit}: CategoryTableProps) {
+export function CategoryTable({categories, onEdit, onDelete}: CategoryTableProps) {
     return (
         <div className="border rounded-md">
             <Table>
@@ -21,7 +22,7 @@ export function CategoryTable({categories, onEdit}: CategoryTableProps) {
                 </TableHeader>
                 <TableBody>
                     {categories.map((category) => (
-                        <TableRow key={category.title}>
+                        <TableRow key={category.id}>
                             <TableCell>
                                 <img
                                     src={category.image}
@@ -35,7 +36,12 @@ export function CategoryTable({categories, onEdit}: CategoryTableProps) {
                                 <Button variant="ghost" size="icon" onClick={() => onEdit(category)}>
                                     <Edit className="h-4 w-4"/>
                                 </Button>
-                                <Button variant="ghost" size="icon" className="text-destructive">
+                                <Button 
+                                    variant="ghost" 
+                                    size="icon" 
+                                    className="text-destructive"
+                                    onClick={() => onDelete(category.id)}
+                                >
                                     <Trash2 className="h-4 w-4"/>
                                 </Button>
                             </TableCell>
