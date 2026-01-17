@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState, useEffect } from "react"
 import { apiService } from "@/services/api/api-service"
 import { convertFileToBase64 } from "@/lib/utils"
+import { Loader2 } from "lucide-react"
 
 interface ProductFormDialogProps {
   open: boolean
@@ -207,6 +208,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
           </div>
           <DialogFooter>
             <Button type="submit" disabled={uploading}>
+                {uploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {uploading ? "Processing..." : "Save changes"}
             </Button>
           </DialogFooter>
