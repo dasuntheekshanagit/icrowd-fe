@@ -4,9 +4,10 @@ import {Edit, Trash2} from "lucide-react"
 
 interface BrandTableProps {
     brands: any[]
+    onEdit: (brand: any) => void
 }
 
-export function BrandTable({brands}: BrandTableProps) {
+export function BrandTable({brands, onEdit}: BrandTableProps) {
     return (
         <div className="border rounded-md">
             <Table>
@@ -29,7 +30,7 @@ export function BrandTable({brands}: BrandTableProps) {
                             </TableCell>
                             <TableCell className="font-medium">{brand.name}</TableCell>
                             <TableCell className="text-right">
-                                <Button variant="ghost" size="icon">
+                                <Button variant="ghost" size="icon" onClick={() => onEdit(brand)}>
                                     <Edit className="h-4 w-4"/>
                                 </Button>
                                 <Button variant="ghost" size="icon" className="text-destructive">

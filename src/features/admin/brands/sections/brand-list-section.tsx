@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { BrandFormDialog } from "@/features/admin/brands/components/brand-form-dialog"
 import { BrandTable } from "@/features/admin/brands/components/brand-table"
+import { apiService } from "@/services/api/api-service"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 
 interface BrandListSectionProps {
   brands: any[]
+  onRefresh: () => void
 }
 
-export function BrandListSection({ brands }: BrandListSectionProps) {
+export function BrandListSection({ brands, onRefresh }: BrandListSectionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedBrand, setSelectedBrand] = useState<any>(null)
 
@@ -17,16 +19,19 @@ export function BrandListSection({ brands }: BrandListSectionProps) {
     setIsDialogOpen(true)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const handleEdit = (brand: any) => {
-  //   setSelectedBrand(brand)
-  //   setIsDialogOpen(true)
-  // }
+  const handleEdit = (brand: any) => {
+    setSelectedBrand(brand)
+    setIsDialogOpen(true)
+  }
 
-  const handleSave = (brand: any) => {
-    console.log("Saving brand:", brand)
-    // Here you would typically call an API to save the brand
+  const handleSave = async (brand: any) => {
+    if (brand.id) {
+        await apiService.updateBrand(brand.id, brand)
+    } else {
+        await apiService.addBrand(brand)
+    }
     setIsDialogOpen(false)
+    onRefresh()
   }
 
   return (
@@ -38,7 +43,7 @@ export function BrandListSection({ brands }: BrandListSectionProps) {
         </Button>
       </div>
 
-      <BrandTable brands={brands} />
+      <BrandTable brands={brands} onEdit={handleEdit} />
 
       <BrandFormDialog 
         open={isDialogOpen} 

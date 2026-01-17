@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { ProductFormDialog } from "@/features/admin/products/components/product-form-dialog"
 import { ProductTable } from "@/features/admin/products/components/product-table"
+import { apiService } from "@/services/api/api-service"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 
 interface ProductListSectionProps {
   products: any[]
+  onRefresh: () => void
 }
 
-export function ProductListSection({ products }: ProductListSectionProps) {
+export function ProductListSection({ products, onRefresh }: ProductListSectionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
 
@@ -17,16 +19,19 @@ export function ProductListSection({ products }: ProductListSectionProps) {
     setIsDialogOpen(true)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const handleEdit = (product: any) => {
-  //   setSelectedProduct(product)
-  //   setIsDialogOpen(true)
-  // }
+  const handleEdit = (product: any) => {
+    setSelectedProduct(product)
+    setIsDialogOpen(true)
+  }
 
-  const handleSave = (product: any) => {
-    console.log("Saving product:", product)
-    // Here you would typically call an API to save the product
+  const handleSave = async (product: any) => {
+    if (product.id) {
+        await apiService.updateProduct(product.id, product)
+    } else {
+        await apiService.addProduct(product)
+    }
     setIsDialogOpen(false)
+    onRefresh()
   }
 
   return (
@@ -38,7 +43,7 @@ export function ProductListSection({ products }: ProductListSectionProps) {
         </Button>
       </div>
 
-      <ProductTable products={products} />
+      <ProductTable products={products} onEdit={handleEdit} />
       
       <ProductFormDialog 
         open={isDialogOpen} 

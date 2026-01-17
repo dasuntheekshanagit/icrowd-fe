@@ -1,17 +1,18 @@
-import {BrandListSection} from "@/features/admin/brands/sections/brand-list-section"
-import {apiService} from "@/services/api/api-service"
-import {useEffect, useState} from "react"
+import { BrandListSection } from "@/features/admin/brands/sections/brand-list-section"
+import { apiService } from "@/services/api/api-service"
+import { useEffect, useState } from "react"
 
 export default function AdminBrands() {
-    const [brands, setBrands] = useState<any[]>([])
+  const [brands, setBrands] = useState<any[]>([])
 
-    useEffect(() => {
-        const fetchBrands = async () => {
-            const data = await apiService.getBrandList()
-            setBrands(data)
-        }
-        fetchBrands()
-    }, [])
+  const fetchBrands = async () => {
+    const data = await apiService.getBrandList()
+    setBrands(data)
+  }
 
-    return <BrandListSection brands={brands}/>
+  useEffect(() => {
+    fetchBrands()
+  }, [])
+
+  return <BrandListSection brands={brands} onRefresh={fetchBrands} />
 }

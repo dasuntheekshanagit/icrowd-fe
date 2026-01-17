@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { CategoryFormDialog } from "@/features/admin/categories/components/category-form-dialog"
 import { CategoryTable } from "@/features/admin/categories/components/category-table"
+import { apiService } from "@/services/api/api-service"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 
 interface CategoryListSectionProps {
   categories: any[]
+  onRefresh: () => void
 }
 
-export function CategoryListSection({ categories }: CategoryListSectionProps) {
+export function CategoryListSection({ categories, onRefresh }: CategoryListSectionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<any>(null)
 
@@ -17,16 +19,19 @@ export function CategoryListSection({ categories }: CategoryListSectionProps) {
     setIsDialogOpen(true)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const handleEdit = (category: any) => {
-  //   setSelectedCategory(category)
-  //   setIsDialogOpen(true)
-  // }
+  const handleEdit = (category: any) => {
+    setSelectedCategory(category)
+    setIsDialogOpen(true)
+  }
 
-  const handleSave = (category: any) => {
-    console.log("Saving category:", category)
-    // Here you would typically call an API to save the category
+  const handleSave = async (category: any) => {
+    if (category.id) {
+        await apiService.updateCategory(category.id, category)
+    } else {
+        await apiService.addCategory(category)
+    }
     setIsDialogOpen(false)
+    onRefresh()
   }
 
   return (
@@ -38,7 +43,7 @@ export function CategoryListSection({ categories }: CategoryListSectionProps) {
         </Button>
       </div>
 
-      <CategoryTable categories={categories} />
+      <CategoryTable categories={categories} onEdit={handleEdit} />
 
       <CategoryFormDialog 
         open={isDialogOpen} 

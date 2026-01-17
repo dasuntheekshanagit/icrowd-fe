@@ -4,9 +4,10 @@ import {Edit, Trash2} from "lucide-react"
 
 interface CategoryTableProps {
     categories: any[]
+    onEdit: (category: any) => void
 }
 
-export function CategoryTable({categories}: CategoryTableProps) {
+export function CategoryTable({categories, onEdit}: CategoryTableProps) {
     return (
         <div className="border rounded-md">
             <Table>
@@ -31,7 +32,7 @@ export function CategoryTable({categories}: CategoryTableProps) {
                             <TableCell className="font-medium">{category.title}</TableCell>
                             <TableCell>{category.description}</TableCell>
                             <TableCell className="text-right">
-                                <Button variant="ghost" size="icon">
+                                <Button variant="ghost" size="icon" onClick={() => onEdit(category)}>
                                     <Edit className="h-4 w-4"/>
                                 </Button>
                                 <Button variant="ghost" size="icon" className="text-destructive">

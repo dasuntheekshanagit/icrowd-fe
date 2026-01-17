@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState, useEffect } from "react"
 import { apiService } from "@/services/api/api-service"
+import { convertFileToBase64 } from "@/lib/utils"
 
 interface ProductFormDialogProps {
   open: boolean
@@ -33,6 +34,8 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
   })
   const [categories, setCategories] = useState<any[]>([])
   const [brands, setBrands] = useState<any[]>([])
+  const [file, setFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     if (product) {
@@ -56,6 +59,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
         stock: "",
       })
     }
+    setFile(null)
   }, [product, open])
 
   useEffect(() => {
@@ -68,10 +72,27 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
     fetchData()
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0])
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    onSave({ ...product, ...formData })
-    onOpenChange(false)
+    setUploading(true)
+    try {
+        let imageUrl = formData.image
+        if (file) {
+            imageUrl = await convertFileToBase64(file)
+        }
+        onSave({ ...product, ...formData, image: imageUrl })
+        onOpenChange(false)
+    } catch (error) {
+        console.error("Error processing file:", error)
+    } finally {
+        setUploading(false)
+    }
   }
 
   return (
@@ -145,14 +166,21 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="image" className="text-right">
-              Image URL
+              Image
             </Label>
-            <Input
-              id="image"
-              value={formData.image}
-              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              className="col-span-3"
-            />
+            <div className="col-span-3">
+                <Input
+                    id="image"
+                    type="file"
+                    onChange={handleFileChange}
+                    className="mb-2"
+                />
+                {formData.image && !file && (
+                    <div className="text-sm text-gray-500">
+                        {formData.image.startsWith('data:') ? 'Current image: [Base64 Image]' : `Current image: ${formData.image}`}
+                    </div>
+                )}
+            </div>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="stock" className="text-right">
@@ -178,7 +206,9 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
             />
           </div>
           <DialogFooter>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" disabled={uploading}>
+                {uploading ? "Processing..." : "Save changes"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
