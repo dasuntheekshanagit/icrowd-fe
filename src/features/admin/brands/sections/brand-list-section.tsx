@@ -17,10 +17,11 @@ export function BrandListSection({ brands }: BrandListSectionProps) {
     setIsDialogOpen(true)
   }
 
-  const handleEdit = (brand: any) => {
-    setSelectedBrand(brand)
-    setIsDialogOpen(true)
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const handleEdit = (brand: any) => {
+  //   setSelectedBrand(brand)
+  //   setIsDialogOpen(true)
+  // }
 
   const handleSave = (brand: any) => {
     console.log("Saving brand:", brand)

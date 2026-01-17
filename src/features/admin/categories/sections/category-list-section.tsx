@@ -17,10 +17,11 @@ export function CategoryListSection({ categories }: CategoryListSectionProps) {
     setIsDialogOpen(true)
   }
 
-  const handleEdit = (category: any) => {
-    setSelectedCategory(category)
-    setIsDialogOpen(true)
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const handleEdit = (category: any) => {
+  //   setSelectedCategory(category)
+  //   setIsDialogOpen(true)
+  // }
 
   const handleSave = (category: any) => {
     console.log("Saving category:", category)

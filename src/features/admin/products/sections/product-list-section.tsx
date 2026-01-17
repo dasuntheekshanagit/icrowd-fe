@@ -17,10 +17,11 @@ export function ProductListSection({ products }: ProductListSectionProps) {
     setIsDialogOpen(true)
   }
 
-  const handleEdit = (product: any) => {
-    setSelectedProduct(product)
-    setIsDialogOpen(true)
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const handleEdit = (product: any) => {
+  //   setSelectedProduct(product)
+  //   setIsDialogOpen(true)
+  // }
 
   const handleSave = (product: any) => {
     console.log("Saving product:", product)

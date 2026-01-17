@@ -19,8 +19,8 @@ export default function ProductDetails() {
             if (foundProduct) {
                 setProduct({
                     ...foundProduct,
-                    description: foundProduct.description || "High-resolution audio with active noise cancelling. Enjoy crystal clear sound and deep bass with these premium headphones.",
-                    features: foundProduct.features || [
+                    description: "High-resolution audio with active noise cancelling. Enjoy crystal clear sound and deep bass with these premium headphones.",
+                    features: [
                         "Active Noise Cancelling",
                         "Hi-Res Audio",
                         "40-Hour Playtime",
