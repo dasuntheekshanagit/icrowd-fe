@@ -5,6 +5,7 @@ import {Card, CardContent} from "@/components/ui/card"
 import {Carousel, type CarouselApi, CarouselContent, CarouselItem,} from "@/components/ui/carousel"
 import {cn} from "@/lib/utils"
 import {apiService} from "@/services/api/api-service"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export function HeroCarousel() {
     const plugin = React.useRef(
@@ -14,11 +15,18 @@ export function HeroCarousel() {
     const [current, setCurrent] = React.useState(0)
     const [count, setCount] = React.useState(0)
     const [slides, setSlides] = React.useState<any[]>([])
+    const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
         const fetchSlides = async () => {
-            const data = await apiService.getHeroSlides()
-            setSlides(data)
+            try {
+                const data = await apiService.getHeroSlides()
+                setSlides(data)
+            } catch (error) {
+                console.error("Failed to fetch slides", error)
+            } finally {
+                setLoading(false)
+            }
         }
         fetchSlides()
     }, [])
@@ -36,8 +44,16 @@ export function HeroCarousel() {
         })
     }, [api, slides]) // Re-run when slides are loaded
 
+    if (loading) {
+        return (
+            <div className="w-full aspect-[3/2] md:aspect-[3/1] max-h-[600px]">
+                <Skeleton className="w-full h-full" />
+            </div>
+        )
+    }
+
     if (slides.length === 0) {
-        return null // Or a loading skeleton
+        return null
     }
 
     return (

@@ -1,13 +1,23 @@
 import { db } from "@/config/firebase";
 import type { Brand, Category, Product, Slide } from "@/types";
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, limit } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, limit, getDoc, setDoc } from "firebase/firestore";
 
 const BRANDS_COLLECTION = "brands";
 const CATEGORIES_COLLECTION = "categories";
 const PRODUCTS_COLLECTION = "products";
-// const SLIDES_COLLECTION = "slides"; // Kept for future use
+const SLIDES_COLLECTION = "slides";
+const ADMINS_COLLECTION = "admins";
+const SETTINGS_COLLECTION = "settings";
+const BANNER_DOC_ID = "promotional_banner";
 
 export const apiService = {
+    // Admins
+    checkIsAdmin: async (email: string): Promise<boolean> => {
+        const q = query(collection(db, ADMINS_COLLECTION), where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+        return !querySnapshot.empty;
+    },
+
     // Brands
     getBrandList: async (): Promise<Brand[]> => {
         const querySnapshot = await getDocs(collection(db, BRANDS_COLLECTION));
@@ -79,31 +89,35 @@ export const apiService = {
 
     // Slides (Hero)
     getHeroSlides: async (): Promise<Slide[]> => {
-        return [
-            {
-                id: 1,
-                title: "Massive Savings!",
-                description: "Get up to 50% OFF on premium accessories. Limited time offer!",
-                image: "/hero/1.png",
-            },
-            {
-                id: 2,
-                title: "Peace of Mind Guaranteed",
-                description: "Enjoy 2 Years Warranty on selected products. Shop with confidence.",
-                image: "/hero/2.png",
-            },
-            {
-                id: 3,
-                title: "New Arrivals Are Here",
-                description: "Discover the latest tech gadgets and upgrade your lifestyle today.",
-                image: "/hero/3.png",
-            },
-            {
-                id: 4,
-                title: "Exclusive Deals",
-                description: "Unbeatable prices on top brands. Don't miss out!",
-                image: "/hero/4.png",
-            },
-        ];
+        const querySnapshot = await getDocs(collection(db, SLIDES_COLLECTION));
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Slide));
+    },
+    addHeroSlide: async (slide: Omit<Slide, 'id'>): Promise<Slide> => {
+        const docRef = await addDoc(collection(db, SLIDES_COLLECTION), slide);
+        return { id: docRef.id, ...slide };
+    },
+    updateHeroSlide: async (id: string, slide: Partial<Slide>): Promise<Slide> => {
+        const slideRef = doc(db, SLIDES_COLLECTION, id);
+        await updateDoc(slideRef, slide);
+        return { id, ...slide } as Slide;
+    },
+    deleteHeroSlide: async (id: string): Promise<void> => {
+        await deleteDoc(doc(db, SLIDES_COLLECTION, id));
+    },
+
+    // Promotional Banner
+    getPromotionalBanner: async (): Promise<any> => {
+        const docRef = doc(db, SETTINGS_COLLECTION, BANNER_DOC_ID);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return docSnap.data();
+        }
+        return null;
+    },
+    updatePromotionalBanner: async (bannerData: any): Promise<void> => {
+        const docRef = doc(db, SETTINGS_COLLECTION, BANNER_DOC_ID);
+        // Add a timestamp to force re-render/re-fetch on client if needed, 
+        // or simply to track when it was last updated.
+        await setDoc(docRef, { ...bannerData, updatedAt: Date.now() }, { merge: true });
     }
 }
