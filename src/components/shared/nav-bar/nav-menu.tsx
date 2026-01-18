@@ -1,35 +1,27 @@
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import {cn} from "@/lib/utils";
-import {apiService} from "@/services/api/api-service";
+import {cn} from "@/lib/utils.ts";
 import type {ComponentProps} from "react";
 import * as React from "react";
+import type {Brand, Category} from "@/types";
 
-export const NavMenu = (props: ComponentProps<typeof NavigationMenu>) => {
-    const [brands, setBrands] = React.useState<any[]>([]);
-    const [categories, setCategories] = React.useState<any[]>([]);
+interface NavMenuProps extends ComponentProps<typeof NavigationMenu> {
+    brands: Brand[];
+    categories: Category[];
+}
 
-    React.useEffect(() => {
-        const fetchData = async () => {
-            const brandsData = await apiService.getBrandList();
-            const categoriesData = await apiService.getCategoryList();
-            setBrands(brandsData);
-            setCategories(categoriesData);
-        };
-        fetchData();
-    }, []);
-
+export const NavMenu = ({brands, categories, ...props}: NavMenuProps) => {
     return (
         <NavigationMenu {...props}>
             <NavigationMenuList
-                className="space-x-0 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start data-[orientation=vertical]:justify-start">
+                className="space-x-0">
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                         <a href="/">Home</a>
@@ -37,7 +29,7 @@ export const NavMenu = (props: ComponentProps<typeof NavigationMenu>) => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Shop by Brand</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="bg-transparent">Shop by Brand</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3 lg:w-[600px]">
                             {brands.map((brand) => (
@@ -51,7 +43,7 @@ export const NavMenu = (props: ComponentProps<typeof NavigationMenu>) => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="bg-transparent">Categories</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] md:grid-cols-3 lg:w-[800px]">
                             {categories.map((category) => (

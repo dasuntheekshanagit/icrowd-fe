@@ -1,6 +1,6 @@
-import {Footer} from "@/components/shared/footer"
-import Navbar from "@/components/shared/nav-bar/navbar.tsx"
+import {Footer} from "@/components/shared/footer/footer"
 import {Outlet} from "react-router-dom"
+import {Navbar} from "@/components/shared/nav-bar/navbar";
 
 export const MainLayout = () => {
     return (
