@@ -8,11 +8,11 @@ import AdminDashboard from "@/pages/admin/dashboard/admin-dashboard"
 import AdminLogin from "@/pages/admin/login/admin-login"
 import AdminSlides from "@/pages/admin/slides/admin-slides"
 import AdminBanner from "@/pages/admin/banner/admin-banner"
-import Home from "@/pages/home/home.tsx"
 import ProductDetails from "@/pages/product-details/product-details"
 import Products from "@/pages/products/products"
 import {createBrowserRouter} from "react-router-dom"
 import { ProtectedRoute } from "@/components/shared/protected-route"
+import {Home} from "@/pages/home/home";
 
 export const router = createBrowserRouter([
     {

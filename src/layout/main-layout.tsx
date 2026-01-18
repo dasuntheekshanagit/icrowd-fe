@@ -1,12 +1,12 @@
 import {Footer} from "@/components/shared/footer"
-import Navbar from "@/components/shared/navbar"
+import Navbar from "@/components/shared/nav-bar/navbar.tsx"
 import {Outlet} from "react-router-dom"
 
 export const MainLayout = () => {
     return (
-        <div className="min-h-screen bg-background flex flex-col">
+        <div className="min-h-screen flex flex-col">
             <Navbar/>
-            <main className="pt-16 flex-1">
+            <main className="flex-1 pt-16 md:pt-20">
                 <Outlet/>
             </main>
             <Footer/>

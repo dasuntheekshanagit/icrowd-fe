@@ -1,32 +1,14 @@
-import {apiService} from "@/services/api/api-service"
-import {useEffect, useState} from "react"
-import {BrandCard} from "@/features/home/components/brand-card";
+import {BrandSectionHeader} from "@/features/home/components/brand-section-header";
+import {BrandGrid} from "@/features/home/components/brand-grid";
 
-export function BrandShowcase() {
-    const [brands, setBrands] = useState<any[]>([])
-
-    useEffect(() => {
-        const fetchBrands = async () => {
-            const data = await apiService.getBrandList()
-            setBrands(data)
-        }
-        fetchBrands()
-    }, [])
+export const BrandShowcase = () => {
 
     return (
-        <section className="py-12 bg-secondary/30">
+        <section className="py-16 md:py-20">
             <div className="container mx-auto px-4">
-                <h2 className="text-2xl font-bold mb-8 text-center">Shop by Brand</h2>
-                <div className="flex flex-wrap justify-center gap-6">
-                    {brands.map((brand) => (
-                        <BrandCard
-                            key={brand.name}
-                            name={brand.name}
-                            logo={brand.logo}
-                        />
-                    ))}
-                </div>
+                <BrandSectionHeader/>
+                <BrandGrid/>
             </div>
         </section>
-    )
+    );
 }
