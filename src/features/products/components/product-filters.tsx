@@ -1,16 +1,15 @@
 import {Button} from "@/components/ui/button"
 import {Checkbox} from "@/components/ui/checkbox"
-import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Slider} from "@/components/ui/slider"
 import {apiService} from "@/services/api/api-service"
-import {Search} from "lucide-react"
 import {useEffect, useState} from "react"
 import {useSearchParams} from "react-router-dom"
+import type {Brand, Category} from "@/types";
 
 export function ProductFilters() {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [search, setSearch] = useState(searchParams.get("search") || "")
+    // const [search, setSearch] = useState(searchParams.get("search") || "")
     const [priceRange, setPriceRange] = useState([0, 2000])
     const [selectedCategories, setSelectedCategories] = useState<string[]>(
         searchParams.getAll("category")
@@ -18,8 +17,8 @@ export function ProductFilters() {
     const [selectedBrands, setSelectedBrands] = useState<string[]>(
         searchParams.getAll("brand")
     )
-    const [categories, setCategories] = useState<any[]>([])
-    const [brands, setBrands] = useState<any[]>([])
+    const [categories, setCategories] = useState<Category[]>([])
+    const [brands, setBrands] = useState<Brand[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,21 +48,21 @@ export function ProductFilters() {
         }
     }, [categories, brands]) // Run when data is loaded
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-        updateParams({search})
-    }
+    // const handleSearch = (e: React.FormEvent) => {
+    //     e.preventDefault()
+    //     updateParams({search})
+    // }
 
-    const updateParams = (newParams: Record<string, any>) => {
-        const params = new URLSearchParams(searchParams)
-
-        if (newParams.search !== undefined) {
-            if (newParams.search) params.set("search", newParams.search)
-            else params.delete("search")
-        }
-
-        setSearchParams(params)
-    }
+    // const updateParams = (newParams: Record<string, any>) => {
+    //     const params = new URLSearchParams(searchParams)
+    //
+    //     if (newParams.search !== undefined) {
+    //         if (newParams.search) params.set("search", newParams.search)
+    //         else params.delete("search")
+    //     }
+    //
+    //     setSearchParams(params)
+    // }
 
     useEffect(() => {
         const params = new URLSearchParams(searchParams)
@@ -96,55 +95,59 @@ export function ProductFilters() {
 
     return (
         <div className="space-y-8">
-            <div>
-                <h3 className="font-semibold mb-4">Search</h3>
-                <form onSubmit={handleSearch} className="flex gap-2">
-                    <Input
-                        placeholder="Search products..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <Button type="submit" size="icon">
-                        <Search className="h-4 w-4"/>
-                    </Button>
-                </form>
-            </div>
+            {/*<div>*/}
+            {/*    <h3 className="font-semibold mb-4">Search</h3>*/}
+            {/*    <form onSubmit={handleSearch} className="flex gap-2">*/}
+            {/*        <Input*/}
+            {/*            placeholder="Search products..."*/}
+            {/*            value={search}*/}
+            {/*            onChange={(e) => setSearch(e.target.value)}*/}
+            {/*        />*/}
+            {/*        <Button type="submit" size="icon">*/}
+            {/*            <Search className="h-4 w-4"/>*/}
+            {/*        </Button>*/}
+            {/*    </form>*/}
+            {/*</div>*/}
 
             <div>
-                <h3 className="font-semibold mb-4">Price Range</h3>
+                <h4 className="font-semibold font-display mb-4">Price Range</h4>
                 <Slider
                     defaultValue={[0, 2000]}
                     max={2000}
                     step={10}
                     value={priceRange}
                     onValueChange={setPriceRange}
-                    className="mb-2"
+                    className="mb-4"
                 />
-                <div className="flex justify-between text-sm text-muted-foreground">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span>LKR {priceRange[0]}</span>
                     <span>LKR {priceRange[1]}</span>
                 </div>
             </div>
 
             <div>
-                <h3 className="font-semibold mb-4">Categories</h3>
-                <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
+                <h4 className="font-semibold font-display mb-4">Categories</h4>
+                <div className="space-y-3">
                     {categories.map((category) => (
-                        <div key={category.title} className="flex items-center space-x-2">
-                            <Checkbox
-                                id={`category-${category.title}`}
-                                checked={selectedCategories.includes(category.title)}
-                                onCheckedChange={() => toggleCategory(category.title)}
-                            />
-                            <Label htmlFor={`category-${category.title}`}>{category.title}</Label>
-                        </div>
+                        <>
+                            <div key={category.title} className="flex items-center space-x-2">
+                                <Checkbox
+                                    id={`category-${category.title}`}
+                                    checked={selectedCategories.includes(category.title)}
+                                    onCheckedChange={() => toggleCategory(category.title)}
+                                />
+                                <Label htmlFor={`category-${category.title}`}
+                                       className="flex items-center gap-3 cursor-pointer"><span
+                                    className="text-sm">{category.title}</span></Label>
+                            </div>
+                        </>
                     ))}
                 </div>
             </div>
 
             <div>
-                <h3 className="font-semibold mb-4">Brands</h3>
-                <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
+                <h3 className="font-semibold font-display mb-4">Brands</h3>
+                <div className="space-y-3">
                     {brands.map((brand) => (
                         <div key={brand.name} className="flex items-center space-x-2">
                             <Checkbox
@@ -152,7 +155,9 @@ export function ProductFilters() {
                                 checked={selectedBrands.includes(brand.name)}
                                 onCheckedChange={() => toggleBrand(brand.name)}
                             />
-                            <Label htmlFor={`brand-${brand.name}`}>{brand.name}</Label>
+                            <Label htmlFor={`brand-${brand.name}`}
+                                   className="flex items-center gap-3 cursor-pointer"><span
+                                className="text-sm">{brand.name}</span></Label>
                         </div>
                     ))}
                 </div>
@@ -165,7 +170,7 @@ export function ProductFilters() {
                     setSelectedCategories([])
                     setSelectedBrands([])
                     setPriceRange([0, 2000])
-                    setSearch("")
+                    // setSearch("")
                     setSearchParams(new URLSearchParams())
                 }}
             >
