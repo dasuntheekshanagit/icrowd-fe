@@ -1,160 +1,172 @@
-import {Card, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {Link} from "react-router-dom";
-// import { Heart } from "lucide-react";
-import {motion} from "framer-motion";
-import {useEffect, useState} from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Clock } from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useState, useEffect } from "react";
 
 type DiscountVariant = "sale" | "new" | "hot";
 
 interface ProductCardProps {
-    id: string | number;
-    name: string;
-    image: string;
-    category: string;
-    brand?: string;
-    price: number;
-    discountedPrice?: number;
-    discountVariant?: DiscountVariant;
-    offerEndsAt?: string;
-    stock?: number;
+  id?: string | number;
+  name: string;
+  image: string;
+  category: string;
+  brand?: string;
+  price: number;
+  discountedPrice?: number;
+  discountVariant?: DiscountVariant;
+  offerEndsAt?: string;
+  stock?: number;
 }
 
 const ribbonStyles: Record<DiscountVariant, string> = {
-    sale: "bg-destructive text-destructive-foreground",
-    new: "bg-green-600 text-white",
-    hot: "bg-orange-500 text-white",
+  sale: "bg-coral text-coral-foreground",
+  new: "bg-accent text-accent-foreground",
+  hot: "bg-gold text-gold-foreground",
 };
 
+const ribbonLabels: Record<DiscountVariant, string> = {
+  sale: "Sale",
+  new: "New",
+  hot: "Hot",
+};
+
+function formatPrice(price: number) {
+  return `LKR ${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
 function calculateDiscount(price: number, discounted?: number) {
-    if (!discounted || discounted >= price) return null;
-    return Math.round(((price - discounted) / price) * 100);
+  if (!discounted || discounted >= price) return null;
+  return Math.round(((price - discounted) / price) * 100);
 }
 
 function getRemainingTime(end: string) {
-    const diff = new Date(end).getTime() - Date.now();
-    if (diff <= 0) return null;
+  const diff = new Date(end).getTime() - Date.now();
+  if (diff <= 0) return null;
 
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
 
-    return `${hours}h ${minutes}m`;
+  return `${hours}h ${minutes}m`;
 }
 
 export function ProductCard({
-                                id,
-                                name,
-                                image,
-                                category,
-                                brand,
-                                price,
-                                discountedPrice,
-                                discountVariant = "sale",
-                                offerEndsAt,
-                                stock
-                            }: ProductCardProps) {
+  id,
+  name,
+  image,
+  category,
+  brand,
+  price,
+  discountedPrice,
+  discountVariant = "sale",
+  offerEndsAt,
+  stock,
+}: ProductCardProps) {
+  const [timeLeft, setTimeLeft] = useState<string | null>(
+    offerEndsAt ? getRemainingTime(offerEndsAt) : null
+  );
+  const discount = calculateDiscount(price, discountedPrice);
+  const isOutOfStock = stock === 0;
 
-    const discount = calculateDiscount(price, discountedPrice);
-    const [timeLeft, setTimeLeft] = useState<string | null>(
-        offerEndsAt ? getRemainingTime(offerEndsAt) : null
-    );
+  useEffect(() => {
+    if (!offerEndsAt) return;
+    
+    const updateTimer = () => {
+      setTimeLeft(getRemainingTime(offerEndsAt));
+    };
+    
+    // Initial update
+    updateTimer();
+    
+    const interval = setInterval(updateTimer, 60000);
+    return () => clearInterval(interval);
+  }, [offerEndsAt]);
 
-    useEffect(() => {
-        if (!offerEndsAt) return;
-        const interval = setInterval(() => {
-            setTimeLeft(getRemainingTime(offerEndsAt));
-        }, 60_000);
+  return (
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
+      className="h-full"
+    >
+      <Link to={`/product/${id}`} className="block h-full">
+        <Card className="group overflow-hidden border-0 shadow-elegant hover:shadow-lg transition-shadow duration-300 bg-card h-full flex flex-col">
+          {/* Image Container */}
+          <div className="relative aspect-square overflow-hidden bg-muted">
+            <img
+              src={image}
+              alt={name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            
+            {/* Badges */}
+            <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
+              {discountVariant && (
+                <Badge className={`${ribbonStyles[discountVariant]} font-semibold border-0`}>
+                  {ribbonLabels[discountVariant]}
+                </Badge>
+              )}
+              {discount && (
+                <Badge variant="secondary" className="font-semibold border-0">
+                  -{discount}%
+                </Badge>
+              )}
+            </div>
 
-        return () => clearInterval(interval);
-    }, [offerEndsAt]);
-
-    return (
-        <Link to={`/product/${id}`} className="group block h-full">
-            <Card
-                className="relative overflow-hidden flex flex-col h-full bg-background hover:shadow-lg transition-shadow">
-
-                {/*<button*/}
-                {/*    className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition"*/}
-                {/*    aria-label="Add to wishlist"*/}
-                {/*>*/}
-                {/*    <Heart className="w-5 h-5 text-muted-foreground hover:text-primary" />*/}
-                {/*</button>*/}
-
-                {discount && (
-                    <motion.div
-                        initial={{x: -30, opacity: 0}}
-                        animate={{x: 0, opacity: 1}}
-                        className={`absolute top-2 left-2 z-20 text-xs font-semibold px-2 py-1 rounded ${ribbonStyles[discountVariant]}`}
-                    >
-                        -{discount}%
-                    </motion.div>
-                )}
-
-                {!discount && discountVariant && discountVariant !== 'sale' && (
-                    <motion.div
-                        initial={{x: -30, opacity: 0}}
-                        animate={{x: 0, opacity: 1}}
-                        className={`absolute top-2 left-2 z-20 text-xs font-semibold px-2 py-1 rounded ${ribbonStyles[discountVariant]}`}
-                    >
-                        {discountVariant.toUpperCase()}
-                    </motion.div>
-                )}
-
-                {stock !== undefined && stock <= 5 && stock > 0 && (
-                    <div className="absolute top-2 left-2 z-20 bg-black/70 text-white text-xs px-2 py-1 rounded mt-8">
-                        Only {stock} left
-                    </div>
-                )}
-
-                <div className="aspect-square bg-secondary/20 overflow-hidden">
-                    <img
-                        src={image}
-                        alt={name}
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                    />
+            {/* Timer Badge */}
+            {timeLeft && (
+              <div className="absolute bottom-3 left-3 right-3 z-10">
+                <div className="flex items-center gap-1.5 bg-coral text-coral-foreground px-3 py-1.5 rounded-full text-xs font-medium shadow-sm w-fit">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Ends in {timeLeft}</span>
                 </div>
+              </div>
+            )}
 
-                <CardHeader className="p-3 pb-0">
-                    <CardTitle className="text-sm font-medium line-clamp-2 h-10">
-                        {name}
-                    </CardTitle>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <span>{category}</span>
-                        {brand && (
-                            <>
-                                <span>•</span>
-                                <span className="font-medium text-foreground/80">{brand}</span>
-                            </>
-                        )}
-                    </div>
-                </CardHeader>
+            {/* Out of Stock Overlay */}
+            {isOutOfStock && (
+              <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-20">
+                <span className="text-muted-foreground font-medium">Out of Stock</span>
+              </div>
+            )}
+            
+            {/* Low Stock Warning */}
+            {!isOutOfStock && stock !== undefined && stock <= 5 && stock > 0 && (
+                <div className="absolute top-3 right-3 z-10">
+                    <Badge variant="destructive" className="font-semibold text-[10px] h-5 px-1.5">
+                        Only {stock} left
+                    </Badge>
+                </div>
+            )}
+          </div>
 
-                <CardFooter className="p-3 pt-2 mt-auto flex flex-col items-start gap-1 w-full">
-
-                    {discountedPrice ? (
-                        <div className="flex items-center gap-2">
-              <span className="font-bold text-sm text-primary">
-                LKR {discountedPrice.toFixed(2)}
+          {/* Content */}
+          <CardContent className="p-4 flex-grow">
+            {brand && (
+              <span className="text-xs text-accent font-medium uppercase tracking-wide block mb-1">
+                {brand}
               </span>
-                            <span className="text-xs line-through text-muted-foreground">
-                LKR {price.toFixed(2)}
+            )}
+            <h3 className="font-semibold line-clamp-2 text-sm group-hover:text-accent transition-colors min-h-[2.5rem]">
+              {name}
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">{category}</p>
+          </CardContent>
+
+          <CardFooter className="px-4 pb-4 pt-0 mt-auto">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 w-full">
+              <span className="text-base sm:text-lg font-bold text-foreground">
+                {formatPrice(discountedPrice || price)}
               </span>
-                        </div>
-                    ) : (
-                        <span className="font-bold text-sm">LKR {price.toFixed(2)}</span>
-                    )}
-
-                    {timeLeft && (
-                        <span className="text-xs text-orange-600 font-medium">
-              Ends in {timeLeft}
-            </span>
-                    )}
-
-                    <Button size="sm" variant="outline" className="w-full h-8 text-xs mt-1">
-                        View Details
-                    </Button>
-                </CardFooter>
-            </Card>
-        </Link>
-    );
+              {discountedPrice && (
+                <span className="text-[10px] sm:text-xs text-muted-foreground line-through">
+                  {formatPrice(price)}
+                </span>
+              )}
+            </div>
+          </CardFooter>
+        </Card>
+      </Link>
+    </motion.div>
+  );
 }

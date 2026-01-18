@@ -3,7 +3,7 @@ interface MapEmbedProps {
     title?: string;
 }
 
-export function MapEmbed({src, title = "Location Map"}: MapEmbedProps) {
+export const MapEmbed = ({src, title = "Location Map"}: MapEmbedProps) => {
     return (
         <div className="h-full min-h-[400px] rounded-xl overflow-hidden shadow-md">
             <iframe

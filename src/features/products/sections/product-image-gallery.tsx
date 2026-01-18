@@ -11,7 +11,7 @@ export function ProductImageGallery({images, name}: ProductImageGalleryProps) {
 
     return (
         <div className="space-y-4">
-            <Card className="overflow-hidden border-none shadow-none bg-secondary/10">
+            <Card className="overflow-hidden border-none shadow-none bg-secondary/10 rounded-2xl">
                 <div className="aspect-square relative">
                     <img
                         src={selectedImage}
@@ -20,11 +20,11 @@ export function ProductImageGallery({images, name}: ProductImageGalleryProps) {
                     />
                 </div>
             </Card>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-2 sm:gap-4">
                 {images.map((img, i) => (
                     <Card
                         key={i}
-                        className={`overflow-hidden cursor-pointer hover:ring-2 ring-primary transition-all ${selectedImage === img ? 'ring-2' : ''}`}
+                        className={`overflow-hidden cursor-pointer hover:ring-2 ring-primary transition-all rounded-lg sm:rounded-xl ${selectedImage === img ? 'ring-2' : ''}`}
                         onClick={() => setSelectedImage(img)}
                     >
                         <div className="aspect-square relative">

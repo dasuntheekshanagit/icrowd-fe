@@ -1,7 +1,7 @@
 import {Clock, Mail, MapPin, Phone} from "lucide-react";
 import {ContactItem} from "@/features/about/components/contact-item";
 
-export function ContactInfo() {
+export const ContactInfo = () => {
     return (
         <div>
             <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>

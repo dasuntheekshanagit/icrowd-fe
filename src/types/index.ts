@@ -34,6 +34,12 @@ export interface Product {
 export interface Slide {
   id?: string | number;
   title: string;
+  subtitle?: string;
   description: string;
   image: string;
+}
+
+// TODO:
+export interface Banner{
+
 }

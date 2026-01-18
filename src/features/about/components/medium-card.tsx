@@ -6,7 +6,7 @@ interface InfoCardProps {
     className?: string;
 }
 
-export function InfoCard({title, description, className}: InfoCardProps) {
+export const InfoCard = ({title, description, className}: InfoCardProps) => {
     return (
         <Card className={`border-none ${className}`}>
             <CardContent className="p-8">

@@ -6,7 +6,7 @@ interface FeatureCardProps {
     className?: string;
 }
 
-export function FeatureCard({title, description, className}: FeatureCardProps) {
+export const FeatureCard = ({title, description, className}: FeatureCardProps)=> {
     return (
         <Card
             className={`text-center hover:shadow-md transition-shadow ${className ?? ""}`}
