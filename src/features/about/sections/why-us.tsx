@@ -1,39 +1,46 @@
-import {FeatureCard} from "@/features/about/components/about-feature-card";
+import { motion } from "framer-motion";
+import { Award, Truck, HeartHandshake } from "lucide-react";
+import { ValueCard } from "../components/value-card";
 
-const whyUsCards = [{
-    title: "Premium Quality",
-    description: "We only stock products from reputable global brands.",
-},
-    {
-        title: "Fast Shipping",
-        description: "Quick and reliable delivery to your location.",
-    },
-    {
-        title: "Expert Support",
-        description: "Our team is here to help you find the perfect gadget.",
-    },
-    {
-        title: "Secure Shopping",
-        description: "Safe and encrypted transactions for peace of mind.",
-    },];
+const values = [
+  {
+    icon: Award,
+    title: "100% Authentic",
+    description: "We only sell genuine products from authorized distributors",
+  },
+  {
+    icon: Truck,
+    title: "Fast Delivery",
+    description: "Same-day delivery in Colombo, next-day island-wide",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Customer First",
+    description: "24/7 support and hassle-free returns policy",
+  },
+];
 
-export function WhyUs() {
-    return (
-        <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8">
-                Why Choose Us?
-            </h2>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {whyUsCards.map((item) => (
-                    <FeatureCard
-                        key={item.title}
-                        title={item.title}
-                        description={item.description}
-                    />
-                ))}
-            </div>
-        </div>
-
-    );
+export const WhyUs = ()=> {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="bg-muted/30 rounded-3xl p-8 md:p-12"
+    >
+      <h2 className="text-3xl font-bold font-display text-center mb-10">
+        Why Choose Us?
+      </h2>
+      <div className="grid md:grid-cols-3 gap-8">
+        {values.map((value) => (
+          <ValueCard
+            key={value.title}
+            icon={value.icon}
+            title={value.title}
+            description={value.description}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
 }

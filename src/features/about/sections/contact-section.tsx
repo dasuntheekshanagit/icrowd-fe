@@ -1,9 +1,9 @@
 import {ContactInfo} from "@/features/about/components/contact-info";
 import {MapEmbed} from "@/features/about/components/map-embed";
 
-export function ContactSection() {
+export const ContactSection = ()=> {
     return (
-        <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
+        <div className="grid md:grid-cols-2 gap-12 items-start mb-16 py-16 md:py-20">
             <ContactInfo/>
 
             <MapEmbed
