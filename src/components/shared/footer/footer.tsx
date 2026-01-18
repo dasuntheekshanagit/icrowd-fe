@@ -6,8 +6,8 @@ import {FooterBottom} from "./footer-bottom";
 export const Footer = ()=> {
     return (
         <footer className="bg-primary text-primary-foreground">
-            <div className="container mx-auto py-16 px-4">
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+            <div className="container mx-auto py-12 sm:py-16 px-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
                     <FooterBrand/>
                     <FooterLinks/>
                     <FooterContact/>

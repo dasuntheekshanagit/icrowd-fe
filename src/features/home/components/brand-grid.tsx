@@ -22,7 +22,7 @@ export const BrandGrid = () => {
         fetchBrands();
     }, []);
     return (
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8 md:gap-12">
             {brands.map((brand, index) => (
                 <motion.div
                     key={brand.id || brand.name}
@@ -32,18 +32,18 @@ export const BrandGrid = () => {
                     transition={{delay: index * 0.1}}
                 >
                     <Link
-                        to={`/brand/${slugifyBrand(brand.name)}`}
-                        className="group flex items-center justify-center w-32 h-20 md:w-40 md:h-24 rounded-xl bg-card border border-border hover:border-accent hover:shadow-elegant transition-all duration-300 p-4"
+                        to={`/products?brand=${slugifyBrand(brand.name)}`}
+                        className="group flex items-center justify-center w-24 h-16 sm:w-32 sm:h-20 md:w-40 md:h-24 rounded-xl bg-card border border-border hover:border-accent hover:shadow-elegant transition-all duration-300 p-2 sm:p-4"
                     >
                         {brand.logo ? (
                             <img
                                 src={brand.logo}
                                 alt={brand.name}
-                                className="max-h-12 max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                                className="max-h-8 sm:max-h-12 max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
                             />
                         ) : (
                             <span
-                                className="font-display font-bold text-xl text-muted-foreground group-hover:text-accent transition-colors">
+                                className="font-display font-bold text-sm sm:text-xl text-muted-foreground group-hover:text-accent transition-colors">
                     {brand.name}
                   </span>
                         )}

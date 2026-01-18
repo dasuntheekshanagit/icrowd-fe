@@ -43,7 +43,7 @@ export const PromotionalPopup = () => {
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-            <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-transparent border-none shadow-none">
+            <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-transparent border-none shadow-none w-[90vw] max-w-[400px]">
                 <div className="relative bg-background rounded-lg overflow-hidden shadow-xl">
                     <button
                         onClick={handleClose}
@@ -52,19 +52,19 @@ export const PromotionalPopup = () => {
                         <X className="h-4 w-4"/>
                     </button>
 
-                    <div className="relative h-72 w-full">
+                    <div className="relative h-64 sm:h-72 w-full">
                         <img
                             src={bannerData.image || "/hero/1.png"}
                             alt="Special Offer"
                             className="object-cover w-full h-full"
                         />
                         <div
-                            className="absolute inset-0 flex flex-col justify-end p-6 text-white">
-                            <DialogHeader className="text-left mb-3">
-                                <DialogTitle className="text-2xl font-bold text-white font-display">{bannerData.title}</DialogTitle>
+                            className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 text-white">
+                            <DialogHeader className="text-left mb-2 sm:mb-3">
+                                <DialogTitle className="text-xl sm:text-2xl font-bold text-white font-display">{bannerData.title}</DialogTitle>
                             </DialogHeader>
-                            <p className="mb-4 text-white/90 text-sm">{bannerData.description}</p>
-                            <Button className="w-full bg-white text-black hover:bg-white/90 font-semibold"
+                            <p className="mb-3 sm:mb-4 text-white/90 text-xs sm:text-sm">{bannerData.description}</p>
+                            <Button className="w-full bg-white text-black hover:bg-white/90 font-semibold text-sm sm:text-base h-9 sm:h-10"
                                     onClick={handleClose}>
                                 Shop Now
                             </Button>

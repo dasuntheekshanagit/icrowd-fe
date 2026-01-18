@@ -22,7 +22,7 @@ export const CategoryGrid = () => {
     }, []);
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
             {categories.map((category, index) => (
                 <motion.div
                     key={category.id || category.title}
@@ -32,11 +32,11 @@ export const CategoryGrid = () => {
                     transition={{delay: index * 0.1}}
                 >
                     <Link
-                        to={`/category/${slugifyCategory(category.title)}`}
+                        to={`/products?category=${slugifyCategory(category.title)}`}
                         className="group block"
                     >
                         <div
-                            className="relative aspect-square rounded-2xl overflow-hidden bg-card shadow-elegant hover:shadow-lg transition-shadow">
+                            className="relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-card shadow-elegant hover:shadow-lg transition-shadow">
                             <img
                                 src={category.image}
                                 alt={category.title}
@@ -44,14 +44,14 @@ export const CategoryGrid = () => {
                             />
                             <div
                                 className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"/>
-                            <div className="absolute bottom-4 left-4 right-4">
-                                <h3 className="font-semibold font-display text-sm group-hover:text-accent transition-colors">
+                            <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
+                                <h3 className="font-semibold font-display text-xs sm:text-sm group-hover:text-accent transition-colors truncate">
                                     {category.title}
                                 </h3>
                                 {/* Assuming count might not be available in the current API response,
                         we can conditionally render it or omit it if not present in the data type */}
                                 {category.count !== undefined && (
-                                    <p className="text-xs text-muted-foreground mt-0.5">
+                                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
                                         {category.count} Products
                                     </p>
                                 )}

@@ -15,30 +15,30 @@ export function ProductDetailsInfo({product}: ProductDetailsInfoProps) {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-                <div className="flex items-center gap-4 mb-4">
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2 font-display">{product.name}</h1>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-4 text-sm sm:text-base">
                     <div className="flex items-center text-yellow-500">
                         <Star className="w-4 h-4 fill-current"/>
                         <span className="ml-1 font-medium text-foreground">{product.rating || 4.5}</span>
                     </div>
-                    <span className="text-muted-foreground">|</span>
+                    <span className="text-muted-foreground hidden sm:inline">|</span>
                     <span className="text-muted-foreground">{product.reviews || 128} Reviews</span>
-                    <span className="text-muted-foreground">|</span>
+                    <span className="text-muted-foreground hidden sm:inline">|</span>
                     <span className="text-primary font-medium">{product.brand}</span>
                 </div>
 
-                <div className="flex items-baseline gap-3">
+                <div className="flex flex-wrap items-baseline gap-3">
                     {product.discountedPrice ? (
                         <>
-                            <p className="text-3xl font-bold text-primary">LKR {product.discountedPrice}</p>
-                            <p className="text-xl text-muted-foreground line-through">LKR {product.price}</p>
+                            <p className="text-2xl sm:text-3xl font-bold text-primary">LKR {product.discountedPrice.toLocaleString()}</p>
+                            <p className="text-lg sm:text-xl text-muted-foreground line-through">LKR {product.price.toLocaleString()}</p>
                             <span
                                 className="bg-destructive text-destructive-foreground text-xs font-bold px-2 py-1 rounded-full self-center">
                         SAVE {Math.round(((product.price - product.discountedPrice) / product.price) * 100)}%
                     </span>
                         </>
                     ) : (
-                        <p className="text-3xl font-bold text-primary">${product.price}</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-primary">LKR {product.price.toLocaleString()}</p>
                     )}
                 </div>
             </div>
@@ -57,7 +57,7 @@ export function ProductDetailsInfo({product}: ProductDetailsInfoProps) {
             </div>
 
             <div className="pt-6 border-t space-y-6">
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <div className="flex items-center border rounded-md">
                         <Button
                             variant="ghost"
@@ -84,12 +84,12 @@ export function ProductDetailsInfo({product}: ProductDetailsInfoProps) {
                     )}
                 </div>
 
-                <div className="flex gap-4">
-                    <Button className="flex-1 h-12 text-base" size="lg">
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <Button className="flex-1 h-12 text-base rounded-full" size="lg">
                         <ShoppingCart className="w-5 h-5 mr-2"/>
                         Add to Cart
                     </Button>
-                    <Button variant="outline" size="lg" className="h-12 px-8">
+                    <Button variant="outline" size="lg" className="h-12 px-8 rounded-full">
                         Buy Now
                     </Button>
                 </div>

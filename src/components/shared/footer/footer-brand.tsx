@@ -10,7 +10,7 @@ const socialLinks = [
 
 export const FooterBrand = ()=> {
   return (
-    <div className="col-span-2">
+    <div className="col-span-1 sm:col-span-2">
       <Link to="/" className="inline-flex items-center gap-2 mb-6">
         <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
           <span className="text-xl font-bold text-accent-foreground font-display">i</span>

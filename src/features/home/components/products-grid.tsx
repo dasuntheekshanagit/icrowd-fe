@@ -29,13 +29,13 @@ export const ProductsGrid = ({products, loading}: ProductsGridProps) => {
 
     if (loading) {
         return (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
                 {Array.from({length: skeletonCount}).map((_, i) => (
                     <div key={i} className="flex flex-col space-y-3">
-                        <Skeleton className="h-[200px] w-full rounded-xl"/>
+                        <Skeleton className="h-[160px] sm:h-[200px] w-full rounded-xl"/>
                         <div className="space-y-2">
-                            <Skeleton className="h-4 w-[250px]"/>
-                            <Skeleton className="h-4 w-[200px]"/>
+                            <Skeleton className="h-3 sm:h-4 w-3/4"/>
+                            <Skeleton className="h-3 sm:h-4 w-1/2"/>
                         </div>
                     </div>
                 ))}
@@ -49,10 +49,10 @@ export const ProductsGrid = ({products, loading}: ProductsGridProps) => {
             initial="hidden"
             whileInView="show"
             viewport={{once: true}}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6"
         >
             {products.map((product) => (
-                <motion.div key={product.id} variants={item}>
+                <motion.div key={product.id} variants={item} className="h-full">
                     <ProductCard
                         id={product.id}
                         name={product.name}

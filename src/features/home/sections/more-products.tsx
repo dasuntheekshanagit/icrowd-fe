@@ -22,9 +22,9 @@ export const MoreProducts = () => {
     return (
         <section className="py-12 bg-secondary/10">
             <div className="container mx-auto px-4">
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
                     <h2 className="text-2xl font-bold">More to Explore</h2>
-                    <Button variant="link" className="gap-1" asChild>
+                    <Button variant="link" className="gap-1 p-0 h-auto sm:h-10 sm:p-4" asChild>
                         <Link to="/products">
                             View All Products <ArrowRight className="w-4 h-4"/>
                         </Link>
@@ -34,7 +34,7 @@ export const MoreProducts = () => {
                 <ProductsGrid products={products} loading={loading}/>
 
                 <div className="mt-10 text-center">
-                    <Button size="lg" className="rounded-full px-8" asChild>
+                    <Button size="lg" className="rounded-full px-8 w-full sm:w-auto" asChild>
                         <Link to="/products">
                             Browse All Products
                         </Link>

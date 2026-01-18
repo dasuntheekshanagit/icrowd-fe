@@ -80,7 +80,7 @@ export const HeroCarousel = () => {
   }
 
   return (
-    <section className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[700px] overflow-hidden">
+    <section className="relative w-full aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] max-h-[700px] overflow-hidden">
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={current}
@@ -99,18 +99,18 @@ export const HeroCarousel = () => {
               alt={slides[current].title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/90 sm:bg-gradient-to-r sm:from-background/95 sm:via-background/60 sm:to-transparent" />
           </div>
 
           {/* Content */}
-          <div className="relative h-full container mx-auto flex items-center">
-            <div className="max-w-xl space-y-6 py-12 px-4 md:px-0">
+          <div className="relative h-full container mx-auto flex items-end sm:items-center pb-16 sm:pb-0">
+            <div className="max-w-xl space-y-4 sm:space-y-6 py-4 sm:py-12 px-4 md:px-0">
               {slides[current].subtitle && (
                 <motion.span
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-sm font-medium"
+                  className="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-accent/10 text-accent text-xs sm:text-sm font-medium"
                 >
                   {slides[current].subtitle}
                 </motion.span>
@@ -120,7 +120,7 @@ export const HeroCarousel = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold font-display leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-display leading-tight"
               >
                 {slides[current].title}
               </motion.h1>
@@ -129,7 +129,7 @@ export const HeroCarousel = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-lg text-muted-foreground"
+                className="text-base sm:text-lg text-muted-foreground line-clamp-2 sm:line-clamp-none"
               >
                 {slides[current].description}
               </motion.p>
@@ -142,7 +142,7 @@ export const HeroCarousel = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full bg-gradient-accent text-accent-foreground border-0 h-14 px-8 text-lg shadow-accent-glow hover:opacity-90 transition-opacity"
+                  className="rounded-full bg-gradient-accent text-accent-foreground border-0 h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg shadow-accent-glow hover:opacity-90 transition-opacity w-full sm:w-auto"
                 >
                   <Link to={"/products"}>
                     {"Shop Now"}
@@ -156,7 +156,7 @@ export const HeroCarousel = () => {
       </AnimatePresence>
 
       {/* Navigation Arrows */}
-      <div className="absolute inset-y-0 left-4 flex items-center z-10">
+      <div className="hidden sm:flex absolute inset-y-0 left-4 items-center z-10">
         <Button
           variant="secondary"
           size="icon"
@@ -166,7 +166,7 @@ export const HeroCarousel = () => {
           <ChevronLeft className="w-6 h-6" />
         </Button>
       </div>
-      <div className="absolute inset-y-0 right-4 flex items-center z-10">
+      <div className="hidden sm:flex absolute inset-y-0 right-4 items-center z-10">
         <Button
           variant="secondary"
           size="icon"

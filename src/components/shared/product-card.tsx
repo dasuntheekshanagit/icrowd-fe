@@ -153,18 +153,16 @@ export function ProductCard({
             <p className="text-xs text-muted-foreground mt-1">{category}</p>
           </CardContent>
 
-          <CardFooter className="px-4 pb-4 pt-0 flex items-center justify-between mt-auto">
-            <div className="flex flex-col">
-              <div className="flex items-baseline gap-2">
-                <span className="text-lg font-bold text-foreground">
-                  {formatPrice(discountedPrice || price)}
+          <CardFooter className="px-4 pb-4 pt-0 mt-auto">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 w-full">
+              <span className="text-base sm:text-lg font-bold text-foreground">
+                {formatPrice(discountedPrice || price)}
+              </span>
+              {discountedPrice && (
+                <span className="text-[10px] sm:text-xs text-muted-foreground line-through">
+                  {formatPrice(price)}
                 </span>
-                {discountedPrice && (
-                  <span className="text-xs text-muted-foreground line-through">
-                    {formatPrice(price)}
-                  </span>
-                )}
-              </div>
+              )}
             </div>
           </CardFooter>
         </Card>

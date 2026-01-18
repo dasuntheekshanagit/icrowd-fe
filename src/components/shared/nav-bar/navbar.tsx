@@ -28,11 +28,10 @@ export const Navbar = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Close mobile menu when route changes
     useEffect(() => {
-        if (isMobileMenuOpen) {
-            setIsMobileMenuOpen(false);
-        }
-    }, [location.pathname, isMobileMenuOpen]);
+        setIsMobileMenuOpen(false);
+    }, [location.pathname]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -63,13 +62,13 @@ export const Navbar = () => {
                 animate={{y: 0}}
                 transition={{duration: 0.5, ease: "easeOut"}}
                 className={cn(
-                    "fixed top-0 inset-x-0 z-50 transition-all duration-300",
+                    "fixed top-0 inset-x-0 z-40 transition-all duration-300",
                     isScrolled
                         ? "glass shadow-elegant"
                         : "bg-transparent"
                 )}
             >
-                <div className="container mx-auto">
+                <div className="container mx-auto px-4">
                     <div className="flex items-center justify-between h-16 md:h-20">
                         <Logo/>
 
