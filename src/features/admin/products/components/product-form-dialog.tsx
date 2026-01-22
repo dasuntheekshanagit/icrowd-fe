@@ -16,6 +16,7 @@ import { apiService } from "@/services/api/api-service"
 import { convertFileToBase64 } from "@/lib/utils"
 import { Loader2, X, Plus } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 interface ProductFormDialogProps {
   open: boolean
@@ -23,6 +24,8 @@ interface ProductFormDialogProps {
   product?: any
   onSave: (product: any) => void
 }
+
+const MAX_FILE_SIZE_BYTES = 948487; // ~1MB limit from Firebase
 
 export function ProductFormDialog({ open, onOpenChange, product, onSave }: ProductFormDialogProps) {
   const [formData, setFormData] = useState({
@@ -46,6 +49,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
   const [additionalFiles, setAdditionalFiles] = useState<File[]>([])
   const [uploading, setUploading] = useState(false)
   const [featureInput, setFeatureInput] = useState("")
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (product) {
@@ -83,6 +87,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
     }
     setMainImageFile(null)
     setAdditionalFiles([])
+    setError(null)
   }, [product, open])
 
   useEffect(() => {
@@ -95,16 +100,43 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
     fetchData()
   }, [])
 
+  const validateFile = (file: File): boolean => {
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+        setError(`File ${file.name} is too large. Maximum size is 1MB.`);
+        return false;
+    }
+    return true;
+  }
+
   const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     if (e.target.files && e.target.files[0]) {
-      setMainImageFile(e.target.files[0])
+      const file = e.target.files[0];
+      if (validateFile(file)) {
+          setMainImageFile(file)
+      } else {
+          // Clear the input
+          e.target.value = "";
+      }
     }
   }
 
   const handleAdditionalImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     if (e.target.files) {
       const files = Array.from(e.target.files)
-      setAdditionalFiles(prev => [...prev, ...files])
+      const validFiles = files.filter(validateFile);
+      
+      if (validFiles.length !== files.length) {
+          // Some files were invalid, error is already set by validateFile
+          // We can choose to add the valid ones or reject all. 
+          // Let's add valid ones but keep the error visible.
+      }
+      
+      setAdditionalFiles(prev => [...prev, ...validFiles])
+      
+      // Clear input to allow re-selecting same files if needed
+      e.target.value = "";
     }
   }
 
@@ -139,6 +171,8 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setUploading(true)
+    setError(null)
+    
     try {
         let mainImageUrl = formData.image
         if (mainImageFile) {
@@ -151,7 +185,19 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
 
         const finalImages = [...formData.images, ...newAdditionalImages]
 
-        onSave({ 
+        // Double check sizes of base64 strings just in case (approximate)
+        // Base64 size ~= file size * 1.33
+        if (mainImageUrl && mainImageUrl.length > MAX_FILE_SIZE_BYTES * 1.37) {
+             throw new Error("Main image is too large after processing.");
+        }
+        
+        for (const img of newAdditionalImages) {
+            if (img.length > MAX_FILE_SIZE_BYTES * 1.37) {
+                throw new Error("One of the additional images is too large after processing.");
+            }
+        }
+
+        await onSave({ 
             ...product, 
             ...formData, 
             image: mainImageUrl,
@@ -161,8 +207,9 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
             discountedPrice: formData.discountedPrice ? Number(formData.discountedPrice) : undefined,
         })
         onOpenChange(false)
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error processing file:", error)
+        setError(error.message || "Failed to save product. Please try again.");
     } finally {
         setUploading(false)
     }
@@ -177,6 +224,13 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
             {product ? "Make changes to the product here." : "Add a new product to your catalog."}
           </DialogDescription>
         </DialogHeader>
+        
+        {error && (
+            <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+            </Alert>
+        )}
+
         <form onSubmit={handleSubmit} className="grid gap-4 py-4">
           <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
@@ -185,6 +239,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
                 />
               </div>
               <div className="grid gap-2">
@@ -194,6 +249,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
                   type="number"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                  required
                 />
               </div>
           </div>
@@ -234,7 +290,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
           </div>
 
           <div className="grid gap-2">
-            <Label>Main Image</Label>
+            <Label>Main Image (Max 1MB)</Label>
             <Input
                 type="file"
                 onChange={handleMainImageChange}
@@ -253,7 +309,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
           </div>
 
           <div className="grid gap-2">
-            <Label>Additional Images</Label>
+            <Label>Additional Images (Max 1MB each)</Label>
             <Input
                 type="file"
                 multiple
@@ -296,6 +352,7 @@ export function ProductFormDialog({ open, onOpenChange, product, onSave }: Produ
                   type="number"
                   value={formData.stock}
                   onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                  required
                 />
               </div>
               <div className="flex items-center space-x-2 mt-8">
